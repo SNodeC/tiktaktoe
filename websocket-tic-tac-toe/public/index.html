@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Websocket Tic Tac Toe</title>
+    <link rel="stylesheet" href="stylesheets/reset.css">
+    <link rel="stylesheet" href="stylesheets/app.css">
+  </head>
+  <body>
+    <h1 class="game-title">Websocket Tic Tac Toe</h1>
+
+    <div class="game">
+      <table class="game-board">
+        <tr>
+          <td class="game-board__cell" data-id="0"></td>
+          <td class="game-board__cell" data-id="1"></td>
+          <td class="game-board__cell" data-id="2"></td>
+        </tr>
+        <tr>
+          <td class="game-board__cell" data-id="3"></td>
+          <td class="game-board__cell" data-id="4"></td>
+          <td class="game-board__cell" data-id="5"></td>
+        </tr>
+        <tr>
+          <td class="game-board__cell" data-id="6"></td>
+          <td class="game-board__cell" data-id="7"></td>
+          <td class="game-board__cell" data-id="8"></td>
+        </tr>
+      </table>
+
+      <div class="game-info">
+        <div class="game-info__players-name">Player Name</div>
+        <div class="game-info__players-turn">Player Turn</div>
+      </div>
+    </div>
+
+    <div class="game-loading">
+      <div class="loader">Loading...</div>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
+</html>
