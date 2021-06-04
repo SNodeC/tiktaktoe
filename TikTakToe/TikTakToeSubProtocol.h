@@ -5,8 +5,7 @@
 #include "web/ws/server/SubProtocol.h"
 #include "web/ws/server/SubProtocolInterface.h"
 
-class TikTakToeSubProtocol : public web::ws::server::SubProtocol
-{
+class TikTakToeSubProtocol : public web::ws::server::SubProtocol {
 public:
     TikTakToeSubProtocol();
 
@@ -21,6 +20,8 @@ public:
     void onProtocolDisconnected() override;
 
 private:
+    bool playing = false;
+
     std::string data;
 
     int flyingPings = 0;
@@ -31,6 +32,5 @@ private:
 extern "C" {
     class web::ws::server::SubProtocolInterface* plugin();
 }
-
 
 #endif // TIKTAKTOESUBPROTOCOL_H

@@ -119,6 +119,8 @@ void TikTakToeSubProtocol::onProtocolConnected() {
         VLOG(0) << "Json: " << json.dump();
 
         sendMessage(json.dump());
+
+        playing = true;
     } else {
         sendClose();
     }
@@ -160,10 +162,12 @@ void TikTakToeSubProtocol::onPongReceived() {
 void TikTakToeSubProtocol::onProtocolDisconnected() {
     VLOG(0) << "On TikTakToe disconnected:";
 
-    gameState.numPlayers--;
+    if (playing) {
+        gameState.numPlayers--;
 
-    if (gameState.numPlayers == 0) {
-        resetBoard();
+        if (gameState.numPlayers == 0) {
+            resetBoard();
+        }
     }
 
     VLOG(0) << "\tServer: " + getLocalAddressAsString();
