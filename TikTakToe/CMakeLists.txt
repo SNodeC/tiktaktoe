@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(SnodeC REQUIRED)
 find_package(OpenSSL REQUIRED)
 
+add_compile_options(-Wno-psabi)
+
 add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocol.cpp)
 
 target_include_directories(tiktaktoe PRIVATE
