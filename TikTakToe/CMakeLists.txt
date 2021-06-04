@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
 configure_file(config.h.in config.h @ONLY)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 project(TikTakToe LANGUAGES CXX)
 
@@ -17,6 +16,7 @@ add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocol.cpp)
 
 target_include_directories(tiktaktoe PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${SNODEC_EXPRESS_INCLUDES}
     ${OPENSSL_INCLUDE_DIR}
 )
