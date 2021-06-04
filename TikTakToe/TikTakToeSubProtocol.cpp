@@ -11,6 +11,7 @@
 #define NAME "tiktaktoe"
 
 class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterface {
+private:
     web::ws::SubProtocol* create([[maybe_unused]] web::http::server::Request& req,
                                  [[maybe_unused]] web::http::server::Response& res) override {
         return new TikTakToeSubProtocol();
