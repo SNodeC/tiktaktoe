@@ -23,10 +23,15 @@
 #include <string>
 
 class TikTakToeGameModel {
+protected:
+    TikTakToeGameModel() = default;
+
 public:
     void playersMove(const std::string& player, int cellID);
     void resetBoard();
     nlohmann::json updateClientState();
+
+    static TikTakToeGameModel& getGameModel();
 
 protected:
     std::string players[2] = {"red", "blue"};
@@ -35,6 +40,8 @@ protected:
     int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     friend class TikTakToeSubProtocol;
+
+    static TikTakToeGameModel gameModel;
 };
 
 #endif // TIKTAKTOEGAMEMODEL_H

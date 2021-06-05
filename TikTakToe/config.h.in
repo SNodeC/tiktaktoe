@@ -15,4 +15,6 @@
 
 #define KEYFPASS "snode.c"
 
+#define MAX_FLYING_PINGS 3
+
 #endif

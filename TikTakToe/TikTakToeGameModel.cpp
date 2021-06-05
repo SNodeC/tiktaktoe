@@ -21,6 +21,8 @@
 #include <map>               // for operator==
 #include <nlohmann/json.hpp> // for basic_json<>::object_t, basic_json<>::v...
 
+TikTakToeGameModel TikTakToeGameModel::gameModel;
+
 void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
     if (player == players[whosNext]) {
         int cellValue = 0;
@@ -56,4 +58,8 @@ nlohmann::json TikTakToeGameModel::updateClientState() {
     message["board"] = board;
 
     return message;
+}
+
+TikTakToeGameModel& TikTakToeGameModel::getGameModel() {
+    return gameModel;
 }

@@ -18,13 +18,12 @@
 
 #include "TikTakToeSubProtocol.h"
 
+#include "config.h"
 #include "log/Logger.h"
 #include "web/http/server/Request.h"
 #include "web/http/server/Response.h"
 
 #include <nlohmann/json.hpp>
-
-#define MAX_FLYING_PINGS 3
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::ws::server::SubProtocol(name)

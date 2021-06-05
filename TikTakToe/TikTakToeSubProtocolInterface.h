@@ -19,7 +19,6 @@
 #ifndef TIKTAKTOESUBPROTOCOLINTERFACE_H
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
-#include "TikTakToeGameModel.h"
 #include "web/ws/SubProtocol.h" // for SubProtocol, SubProt...
 #include "web/ws/server/SubProtocolInterface.h"
 
@@ -36,8 +35,6 @@ private:
     std::string name() override;
     web::ws::SubProtocol::Role role() override;
     void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override;
-
-    TikTakToeGameModel gameModel;
 };
 
 extern "C" {

@@ -18,13 +18,14 @@
 
 #include "TikTakToeSubProtocolInterface.h"
 
+#include "TikTakToeGameModel.h"
 #include "TikTakToeSubProtocol.h"
 
 #define NAME "tiktaktoe"
 
 web::ws::SubProtocol* TikTakToeSubProtocolInterface::create([[maybe_unused]] web::http::server::Request& req,
                                                             [[maybe_unused]] web::http::server::Response& res) {
-    return new TikTakToeSubProtocol(NAME, gameModel);
+    return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
 std::string TikTakToeSubProtocolInterface::name() {
