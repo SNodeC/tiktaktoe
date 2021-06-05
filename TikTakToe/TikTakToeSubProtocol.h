@@ -1,13 +1,13 @@
 #ifndef TIKTAKTOESUBPROTOCOL_H
 #define TIKTAKTOESUBPROTOCOL_H
 
+#include "TikTakToeGameModel.h"
 #include "net/timer/IntervalTimer.h"
 #include "web/ws/server/SubProtocol.h"
-#include "web/ws/server/SubProtocolInterface.h"
 
 class TikTakToeSubProtocol : public web::ws::server::SubProtocol {
 public:
-    TikTakToeSubProtocol();
+    TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& game);
 
     ~TikTakToeSubProtocol() override;
 
@@ -26,11 +26,11 @@ private:
 
     int flyingPings = 0;
 
+    const std::string name;
+
+    TikTakToeGameModel& gameModel;
+
     net::timer::Timer& timer;
 };
-
-extern "C" {
-    class web::ws::server::SubProtocolInterface* plugin();
-}
 
 #endif // TIKTAKTOESUBPROTOCOL_H

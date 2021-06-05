@@ -12,7 +12,7 @@ find_package(OpenSSL REQUIRED)
 
 add_compile_options(-Wno-psabi)
 
-add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocol.cpp)
+add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolInterface.cpp TikTakToeSubProtocol.cpp TikTakToeGameModel.cpp)
 
 target_include_directories(tiktaktoe PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

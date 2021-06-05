@@ -8,82 +8,9 @@
 
 #define MAX_FLYING_PINGS 3
 
-#define NAME "tiktaktoe"
-
-class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterface {
-private:
-    web::ws::SubProtocol* create([[maybe_unused]] web::http::server::Request& req,
-                                 [[maybe_unused]] web::http::server::Response& res) override {
-        return new TikTakToeSubProtocol();
-    }
-
-    std::string name() override {
-        return NAME;
-    }
-
-    web::ws::SubProtocol::Role role() override {
-        return web::ws::SubProtocol::Role::SERVER;
-    }
-
-    void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override {
-        delete tikTakToeSubProtocol;
-    }
-};
-
-extern "C" {
-    class web::ws::server::SubProtocolInterface* plugin() {
-        return new TikTakToeSubProtocolInterface();
-    }
-}
-
-struct GameState {
-    std::string players[2] = {"red", "blue"};
-    int whosNext = 0;
-    int numPlayers = 0;
-    int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-};
-
-static GameState gameState;
-
-void playersMove(const std::string& player, int cellID) {
-    if (player == gameState.players[gameState.whosNext]) {
-        int cellValue = 0;
-
-        if (player == "red") {
-            cellValue = 1;
-        } else if (player == "blue") {
-            cellValue = -1;
-        }
-
-        gameState.board[cellID] = cellValue;
-
-        if (gameState.whosNext >= 1) {
-            gameState.whosNext = 0;
-        } else {
-            gameState.whosNext += 1;
-        }
-    }
-}
-
-void resetBoard() {
-    gameState.whosNext = 0;
-    for (int i = 0; i < 9; i++) {
-        gameState.board[i] = 0;
-    }
-}
-
-nlohmann::json updateClientState() {
-    nlohmann::json message;
-
-    message["type"] = "update";
-    message["whosTurn"] = gameState.players[gameState.whosNext];
-    message["board"] = gameState.board;
-
-    return message;
-}
-
-TikTakToeSubProtocol::TikTakToeSubProtocol()
-    : web::ws::server::SubProtocol(NAME)
+TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
+    : web::ws::server::SubProtocol(name)
+    , gameModel(gameModel)
     , timer(net::timer::Timer::intervalTimer(
           [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
               this->sendPing();
@@ -106,15 +33,15 @@ void TikTakToeSubProtocol::onProtocolConnected() {
     VLOG(0) << "\tServer: " + getLocalAddressAsString();
     VLOG(0) << "\tClient: " + getRemoteAddressAsString();
 
-    VLOG(0) << "\tNumPlayers: " << gameState.numPlayers;
+    VLOG(0) << "\tNumPlayers: " << gameModel.numPlayers;
 
-    if (gameState.numPlayers < 2) {
+    if (gameModel.numPlayers < 2) {
         nlohmann::json json;
 
         json["type"] = "setup";
-        json["playerData"]["whosTurn"] = gameState.players[gameState.whosNext];
-        json["playerData"]["playerID"] = gameState.players[gameState.numPlayers++];
-        json["playerData"]["board"] = gameState.board;
+        json["playerData"]["whosTurn"] = gameModel.players[gameModel.whosNext];
+        json["playerData"]["playerID"] = gameModel.players[gameModel.numPlayers++];
+        json["playerData"]["board"] = gameModel.board;
 
         VLOG(0) << "Json: " << json.dump();
 
@@ -142,8 +69,15 @@ void TikTakToeSubProtocol::onMessageEnd() {
     VLOG(0) << "Action dump: " << action.dump();
 
     if (action["type"] == "move") {
-        playersMove(action["playerID"], action["cellID"]);
-        nlohmann::json message = updateClientState();
+        gameModel.playersMove(action["playerID"], action["cellID"]);
+        nlohmann::json message = gameModel.updateClientState();
+
+        /* // also possible
+                forEachClient([&message](SubProtocol* client) {
+                    client->sendMessage(message.dump());
+                });
+        */
+
         sendBroadcast(message.dump());
         VLOG(0) << "SendMessage Dump: " << message.dump();
     }
@@ -163,10 +97,10 @@ void TikTakToeSubProtocol::onProtocolDisconnected() {
     VLOG(0) << "On TikTakToe disconnected:";
 
     if (playing) {
-        gameState.numPlayers--;
+        gameModel.numPlayers--;
 
-        if (gameState.numPlayers == 0) {
-            resetBoard();
+        if (gameModel.numPlayers == 0) {
+            gameModel.resetBoard();
         }
     }
 

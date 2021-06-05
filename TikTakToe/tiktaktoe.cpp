@@ -1,4 +1,4 @@
-#include "TikTakToeSubProtocol.h"
+#include "TikTakToeSubProtocolInterface.h"
 #include "config.h"
 #include "express/legacy/WebApp.h"
 #include "express/tls/WebApp.h"
