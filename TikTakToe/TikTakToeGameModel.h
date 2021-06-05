@@ -19,7 +19,7 @@
 #ifndef TIKTAKTOEGAMEMODEL_H
 #define TIKTAKTOEGAMEMODEL_H
 
-#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp> // for json
 #include <string>
 
 class TikTakToeGameModel {

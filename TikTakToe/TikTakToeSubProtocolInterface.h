@@ -20,7 +20,15 @@
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
 #include "TikTakToeGameModel.h"
+#include "web/ws/SubProtocol.h" // for SubProtocol, SubProt...
 #include "web/ws/server/SubProtocolInterface.h"
+
+#include <string> // for string
+
+namespace web::http::server {
+    class Request;
+    class Response;
+} // namespace web::http::server
 
 class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterface {
 private:

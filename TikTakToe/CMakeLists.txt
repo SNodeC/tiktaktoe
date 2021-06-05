@@ -31,7 +31,6 @@ target_include_directories(
 target_link_libraries(tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES}
                                        ${OPENSSL_LIBRARIES})
 
-
 if(CHECK_INCLUDES)
   set_property(TARGET tiktaktoe PROPERTY CXX_INCLUDE_WHAT_YOU_USE
                                          ${iwyu_path_and_options})
