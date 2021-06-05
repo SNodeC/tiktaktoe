@@ -45,7 +45,7 @@ TikTakToeSubProtocol::~TikTakToeSubProtocol() {
 }
 
 void TikTakToeSubProtocol::onProtocolConnected() {
-    VLOG(0) << "On TikTakToe connected:";
+    VLOG(0) << "TikTakToe on connected:";
 
     VLOG(0) << "\tServer: " + getLocalAddressAsString();
     VLOG(0) << "\tClient: " + getRemoteAddressAsString();
@@ -71,7 +71,7 @@ void TikTakToeSubProtocol::onProtocolConnected() {
 }
 
 void TikTakToeSubProtocol::onMessageStart(int opCode) {
-    VLOG(0) << "TikTakToe Message Start - OpCode: " << opCode;
+    VLOG(0) << "TikTakToe on Message Start - OpCode: " << opCode;
 }
 
 void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) {
@@ -79,7 +79,7 @@ void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) 
 }
 
 void TikTakToeSubProtocol::onMessageEnd() {
-    VLOG(0) << "TikTakToe Data: " << data;
+    VLOG(0) << "TikTakToe on Data: " << data;
 
     nlohmann::json action = nlohmann::json::parse(data);
 
@@ -103,15 +103,15 @@ void TikTakToeSubProtocol::onMessageEnd() {
 }
 
 void TikTakToeSubProtocol::onMessageError(uint16_t errnum) {
-    VLOG(0) << "TikTakToe Message error: " << errnum;
+    VLOG(0) << "TikTakToe on Message error: " << errnum;
 }
 
 void TikTakToeSubProtocol::onPongReceived() {
-    VLOG(0) << "TikTakToe Pong received";
+    VLOG(0) << "TikTakToe on Pong received";
     flyingPings = 0;
 }
 void TikTakToeSubProtocol::onProtocolDisconnected() {
-    VLOG(0) << "On TikTakToe disconnected:";
+    VLOG(0) << "TikTakToe on disconnected:";
 
     if (activePlayer) {
         gameModel.numPlayers--;
