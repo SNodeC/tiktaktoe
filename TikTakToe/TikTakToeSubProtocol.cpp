@@ -64,7 +64,7 @@ void TikTakToeSubProtocol::onProtocolConnected() {
 
         sendMessage(json.dump());
 
-        playing = true;
+        activePlayer = true;
     } else {
         sendClose();
     }
@@ -113,7 +113,7 @@ void TikTakToeSubProtocol::onPongReceived() {
 void TikTakToeSubProtocol::onProtocolDisconnected() {
     VLOG(0) << "On TikTakToe disconnected:";
 
-    if (playing) {
+    if (activePlayer) {
         gameModel.numPlayers--;
 
         if (gameModel.numPlayers == 0) {

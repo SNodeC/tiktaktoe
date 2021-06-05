@@ -38,7 +38,7 @@ public:
     void onProtocolDisconnected() override;
 
 private:
-    bool playing = false;
+    bool activePlayer = false;
 
     std::string data;
 
