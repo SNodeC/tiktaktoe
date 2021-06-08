@@ -38,7 +38,7 @@ private:
 };
 
 extern "C" {
-    class web::ws::server::SubProtocolInterface* plugin();
+    class TikTakToeSubProtocolInterface* plugin();
 }
 
 #endif // TIKTAKTOESUBPROTOCOLINTERFACE_H

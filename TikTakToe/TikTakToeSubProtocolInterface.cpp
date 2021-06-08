@@ -41,7 +41,7 @@ void TikTakToeSubProtocolInterface::destroy(web::ws::SubProtocol* tikTakToeSubPr
 }
 
 extern "C" {
-    class web::ws::server::SubProtocolInterface* plugin() {
+    class TikTakToeSubProtocolInterface* plugin() {
         return new TikTakToeSubProtocolInterface();
     }
 }
