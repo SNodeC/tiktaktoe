@@ -33,7 +33,7 @@
 int main(int argc, char* argv[]) {
     net::SNodeC::init(argc, argv);
 
-    web::ws::server::SubProtocolSelector::instance().registerSubProtocol(plugin());
+    web::ws::server::SubProtocolSelector::instance()->registerSubProtocol(plugin());
 
     express::legacy::WebApp legacyApp;
 

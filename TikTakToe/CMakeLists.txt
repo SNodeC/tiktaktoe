@@ -29,6 +29,7 @@ target_include_directories(
                     ${SNODEC_EXPRESS_INCLUDES} ${OPENSSL_INCLUDE_DIR})
 
 target_link_libraries(tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES}
+                                       ${SNODEC_WEBSOCKET_LIBRARIES}
                                        ${OPENSSL_LIBRARIES})
 
 if(CHECK_INCLUDES)

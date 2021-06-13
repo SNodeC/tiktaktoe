@@ -110,6 +110,7 @@ void TikTakToeSubProtocol::onPongReceived() {
     VLOG(0) << "TikTakToe on Pong received";
     flyingPings = 0;
 }
+
 void TikTakToeSubProtocol::onProtocolDisconnected() {
     VLOG(0) << "TikTakToe on disconnected:";
 
