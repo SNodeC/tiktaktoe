@@ -33,7 +33,7 @@ class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterfa
 private:
     web::ws::SubProtocol* create(web::http::server::Request& req, web::http::server::Response& res) override;
     std::string name() override;
-    web::ws::SubProtocol::Role role() override;
+    std::string role() override;
     void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override;
 };
 
