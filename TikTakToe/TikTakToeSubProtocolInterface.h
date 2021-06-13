@@ -19,19 +19,16 @@
 #ifndef TIKTAKTOESUBPROTOCOLINTERFACE_H
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
-#include "web/ws/SubProtocol.h" // for SubProtocol, SubProt...
-#include "web/ws/server/SubProtocolInterface.h"
+namespace web::ws {
+    class SubProtocol;
+}
 
 #include <string> // for string
-
-namespace web::http::server {
-    class Request;
-    class Response;
-} // namespace web::http::server
+#include <web/ws/server/SubProtocolInterface.h>
 
 class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterface {
 private:
-    web::ws::SubProtocol* create(web::http::server::Request& req, web::http::server::Response& res) override;
+    web::ws::SubProtocol* create() override;
     std::string name() override;
     std::string role() override;
     void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override;

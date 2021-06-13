@@ -19,11 +19,11 @@
 #include "TikTakToeSubProtocol.h"
 
 #include "config.h"
-#include "log/Logger.h"
-#include "web/http/server/Request.h"
-#include "web/http/server/Response.h"
 
+#include <log/Logger.h>
 #include <nlohmann/json.hpp>
+#include <web/http/server/Request.h>
+#include <web/http/server/Response.h>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::ws::server::SubProtocol(name)

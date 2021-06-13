@@ -20,8 +20,9 @@
 #define TIKTAKTOESUBPROTOCOL_H
 
 #include "TikTakToeGameModel.h"
-#include "net/timer/IntervalTimer.h"
-#include "web/ws/server/SubProtocol.h"
+
+#include <net/timer/IntervalTimer.h>
+#include <web/ws/server/SubProtocol.h>
 
 class TikTakToeSubProtocol : public web::ws::server::SubProtocol {
 public:

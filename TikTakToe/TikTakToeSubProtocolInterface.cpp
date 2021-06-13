@@ -23,8 +23,7 @@
 
 #define NAME "tiktaktoe"
 
-web::ws::SubProtocol* TikTakToeSubProtocolInterface::create([[maybe_unused]] web::http::server::Request& req,
-                                                            [[maybe_unused]] web::http::server::Response& res) {
+web::ws::SubProtocol* TikTakToeSubProtocolInterface::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
