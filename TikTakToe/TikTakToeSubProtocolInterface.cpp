@@ -27,12 +27,16 @@ web::ws::SubProtocol* TikTakToeSubProtocolInterface::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
+void TikTakToeSubProtocolInterface::destroy() {
+    delete this;
+}
+
 std::string TikTakToeSubProtocolInterface::name() {
     return NAME;
 }
 
-std::string TikTakToeSubProtocolInterface::role() {
-    return "server";
+web::ws::server::SubProtocolInterface::ROLE TikTakToeSubProtocolInterface::role() {
+    return web::ws::server::SubProtocolInterface::ROLE::SERVER;
 }
 
 void TikTakToeSubProtocolInterface::destroy(web::ws::SubProtocol* tikTakToeSubProtocol) {

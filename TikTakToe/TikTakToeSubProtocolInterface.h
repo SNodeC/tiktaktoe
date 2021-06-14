@@ -28,9 +28,12 @@ namespace web::ws {
 
 class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterface {
 private:
-    web::ws::SubProtocol* create() override;
+    void destroy() override;
+
     std::string name() override;
-    std::string role() override;
+    ROLE role() override;
+
+    web::ws::SubProtocol* create() override;
     void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override;
 };
 
