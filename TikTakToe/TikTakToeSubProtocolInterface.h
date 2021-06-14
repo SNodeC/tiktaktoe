@@ -19,10 +19,6 @@
 #ifndef TIKTAKTOESUBPROTOCOLINTERFACE_H
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
-namespace web::ws {
-    class SubProtocol;
-}
-
 #include <string> // for string
 #include <web/ws/server/SubProtocolInterface.h>
 
