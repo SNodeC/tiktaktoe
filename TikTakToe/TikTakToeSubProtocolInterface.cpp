@@ -35,8 +35,8 @@ std::string TikTakToeSubProtocolInterface::name() {
     return NAME;
 }
 
-web::ws::server::SubProtocolInterface::ROLE TikTakToeSubProtocolInterface::role() {
-    return web::ws::server::SubProtocolInterface::ROLE::SERVER;
+web::ws::server::SubProtocolInterface::Role TikTakToeSubProtocolInterface::role() {
+    return web::ws::server::SubProtocolInterface::Role::SERVER;
 }
 
 void TikTakToeSubProtocolInterface::destroy(web::ws::SubProtocol* tikTakToeSubProtocol) {

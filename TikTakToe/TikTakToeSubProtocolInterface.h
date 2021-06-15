@@ -27,7 +27,7 @@ private:
     void destroy() override;
 
     std::string name() override;
-    ROLE role() override;
+    Role role() override;
 
     web::ws::SubProtocol* create() override;
     void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override;
