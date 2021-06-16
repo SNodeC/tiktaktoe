@@ -1,4 +1,6 @@
-var ws = new WebSocket('wss://titan.home.vchrist.at:8088/ws/', 'tiktaktoe');
+// var ws = new WebSocket('wss://titan.home.vchrist.at:8088/ws/', 'tiktaktoe');
+
+var ws = new WebSocket('wss://' + location.host + '/ws/', 'tiktaktoe');
 
 var gameState = {
   whosTurn: undefined,
