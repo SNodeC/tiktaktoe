@@ -22,21 +22,21 @@
 #include "TikTakToeGameModel.h"
 
 #include <net/timer/IntervalTimer.h>
-#include <web/ws/server/SubProtocol.h>
+#include <web/websocket/server/SubProtocol.h>
 
-class TikTakToeSubProtocol : public web::ws::server::SubProtocol {
+class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:
     TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& game);
 
     ~TikTakToeSubProtocol() override;
 
-    void onProtocolConnected() override;
+    void onConnected() override;
     void onMessageStart(int opCode) override;
     void onMessageData(const char* junk, std::size_t junkLen) override;
     void onMessageEnd() override;
     void onMessageError(uint16_t errnum) override;
     void onPongReceived() override;
-    void onProtocolDisconnected() override;
+    void onDisconnected() override;
 
 private:
     bool activePlayer = false;

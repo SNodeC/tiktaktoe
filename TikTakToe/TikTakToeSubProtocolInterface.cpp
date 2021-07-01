@@ -23,7 +23,7 @@
 
 #define NAME "tiktaktoe"
 
-web::ws::SubProtocol* TikTakToeSubProtocolInterface::create() {
+web::websocket::SubProtocol* TikTakToeSubProtocolInterface::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
@@ -35,11 +35,11 @@ std::string TikTakToeSubProtocolInterface::name() {
     return NAME;
 }
 
-web::ws::server::SubProtocolInterface::Role TikTakToeSubProtocolInterface::role() {
-    return web::ws::server::SubProtocolInterface::Role::SERVER;
+web::websocket::server::SubProtocolInterface::Role TikTakToeSubProtocolInterface::role() {
+    return web::websocket::server::SubProtocolInterface::Role::SERVER;
 }
 
-void TikTakToeSubProtocolInterface::destroy(web::ws::SubProtocol* tikTakToeSubProtocol) {
+void TikTakToeSubProtocolInterface::destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) {
     delete tikTakToeSubProtocol;
 }
 

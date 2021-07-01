@@ -20,17 +20,17 @@
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
 #include <string> // for string
-#include <web/ws/server/SubProtocolInterface.h>
+#include <web/websocket/server/SubProtocolInterface.h>
 
-class TikTakToeSubProtocolInterface : public web::ws::server::SubProtocolInterface {
+class TikTakToeSubProtocolInterface : public web::websocket::server::SubProtocolInterface {
 private:
     void destroy() override;
 
     std::string name() override;
     Role role() override;
 
-    web::ws::SubProtocol* create() override;
-    void destroy(web::ws::SubProtocol* tikTakToeSubProtocol) override;
+    web::websocket::SubProtocol* create() override;
+    void destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) override;
 };
 
 extern "C" {

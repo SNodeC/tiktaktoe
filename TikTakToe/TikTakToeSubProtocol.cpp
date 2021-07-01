@@ -26,7 +26,7 @@
 #include <web/http/server/Response.h>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
-    : web::ws::server::SubProtocol(name)
+    : web::websocket::server::SubProtocol(name)
     , gameModel(gameModel)
     , timer(net::timer::Timer::intervalTimer(
           [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
@@ -44,7 +44,7 @@ TikTakToeSubProtocol::~TikTakToeSubProtocol() {
     timer.cancel();
 }
 
-void TikTakToeSubProtocol::onProtocolConnected() {
+void TikTakToeSubProtocol::onConnected() {
     VLOG(0) << "TikTakToe on connected:";
 
     VLOG(0) << "\tServer: " + getLocalAddressAsString();
@@ -111,7 +111,7 @@ void TikTakToeSubProtocol::onPongReceived() {
     flyingPings = 0;
 }
 
-void TikTakToeSubProtocol::onProtocolDisconnected() {
+void TikTakToeSubProtocol::onDisconnected() {
     VLOG(0) << "TikTakToe on disconnected:";
 
     if (activePlayer) {
