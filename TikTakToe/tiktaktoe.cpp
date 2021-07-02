@@ -22,7 +22,6 @@
 #include "express/tls/WebApp.h"
 #include "log/Logger.h"
 #include "net/SNodeC.h"
-#include "web/websocket/server/SubProtocolSelector.h"
 
 #include <cstddef>
 #include <endian.h>
@@ -33,7 +32,7 @@
 int main(int argc, char* argv[]) {
     net::SNodeC::init(argc, argv);
 
-    web::websocket::server::SubProtocolSelector::instance()->add(plugin());
+    plugin();
 
     express::legacy::WebApp legacyApp;
 

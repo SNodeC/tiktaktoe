@@ -20,11 +20,19 @@
 
 #include "TikTakToeGameModel.h"
 #include "TikTakToeSubProtocol.h"
+#include "web/http/server/SocketContextUpgradeFactorySelector.h"
+#include "web/websocket/server/SocketContextUpgradeFactory.h"
+#include "web/websocket/server/SubProtocolSelector.h"
 
 #define NAME "tiktaktoe"
 
 web::websocket::SubProtocol* TikTakToeSubProtocolInterface::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
+}
+
+TikTakToeSubProtocolInterface::TikTakToeSubProtocolInterface() {
+    web::http::server::SocketContextUpgradeFactorySelector::instance()->add(new web::websocket::server::SocketContextUpgradeFactory());
+    web::websocket::server::SubProtocolSelector::instance()->add(this);
 }
 
 void TikTakToeSubProtocolInterface::destroy() {
@@ -44,7 +52,7 @@ void TikTakToeSubProtocolInterface::destroy(web::websocket::SubProtocol* tikTakT
 }
 
 extern "C" {
-    class TikTakToeSubProtocolInterface* plugin() {
+    TikTakToeSubProtocolInterface* plugin() {
         return new TikTakToeSubProtocolInterface();
     }
 }

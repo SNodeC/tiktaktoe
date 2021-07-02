@@ -23,6 +23,9 @@
 #include <web/websocket/server/SubProtocolInterface.h>
 
 class TikTakToeSubProtocolInterface : public web::websocket::server::SubProtocolInterface {
+public:
+    TikTakToeSubProtocolInterface();
+
 private:
     void destroy() override;
 
@@ -34,7 +37,7 @@ private:
 };
 
 extern "C" {
-    class TikTakToeSubProtocolInterface* plugin();
+    TikTakToeSubProtocolInterface* plugin();
 }
 
 #endif // TIKTAKTOESUBPROTOCOLINTERFACE_H

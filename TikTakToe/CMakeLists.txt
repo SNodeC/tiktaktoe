@@ -19,6 +19,8 @@ option(CHECK_INCLUDES "Check used headers")
 
 set(iwyu_path_and_options ${iwyu_path} -Xiwyu --verbose=1)
 
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_compile_options(-Wno-psabi)
 
 add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolInterface.cpp
@@ -28,9 +30,11 @@ target_include_directories(
   tiktaktoe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
                     ${SNODEC_EXPRESS_INCLUDES} ${OPENSSL_INCLUDE_DIR})
 
-target_link_libraries(tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES}
-                                       ${SNODEC_WEBSOCKET_LIBRARIES}
-                                       ${OPENSSL_LIBRARIES})
+target_link_libraries(
+  tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES} ${SNODEC_WEBSOCKET_LIBRARIES}
+                   ${OPENSSL_LIBRARIES})
+
+install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
 if(CHECK_INCLUDES)
   set_property(TARGET tiktaktoe PROPERTY CXX_INCLUDE_WHAT_YOU_USE
