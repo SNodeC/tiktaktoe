@@ -16,17 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TikTakToeSubProtocolInterface.h"
+#include "TikTakToeSubProtocolFactory.h"
 #include "config.h"
-#include "express/legacy/WebApp.h"
-#include "express/tls/WebApp.h"
-#include "log/Logger.h"
-#include "net/SNodeC.h"
 
 #include <cstddef>
 #include <endian.h>
+#include <express/legacy/WebApp.h>
+#include <express/tls/WebApp.h>
 #include <iomanip>
 #include <iostream>
+#include <log/Logger.h>
+#include <net/SNodeC.h>
 #include <vector>
 
 int main(int argc, char* argv[]) {

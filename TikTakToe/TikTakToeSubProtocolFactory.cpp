@@ -16,43 +16,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "TikTakToeSubProtocolInterface.h"
+#include "TikTakToeSubProtocolFactory.h"
 
 #include "TikTakToeGameModel.h"
 #include "TikTakToeSubProtocol.h"
-#include "web/http/server/SocketContextUpgradeFactorySelector.h"
-#include "web/websocket/server/SocketContextUpgradeFactory.h"
-#include "web/websocket/server/SubProtocolSelector.h"
+
+#include <web/http/server/SocketContextUpgradeFactorySelector.h>
+#include <web/websocket/server/SocketContextUpgradeFactory.h>
+#include <web/websocket/server/SubProtocolSelector.h>
 
 #define NAME "tiktaktoe"
 
-web::websocket::SubProtocol* TikTakToeSubProtocolInterface::create() {
+web::websocket::SubProtocol* TikTakToeSubProtocolFactory::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
-TikTakToeSubProtocolInterface::TikTakToeSubProtocolInterface() {
-    web::http::server::SocketContextUpgradeFactorySelector::instance()->add(new web::websocket::server::SocketContextUpgradeFactory());
-    web::websocket::server::SubProtocolSelector::instance()->add(this);
+TikTakToeSubProtocolFactory::TikTakToeSubProtocolFactory() {
+    web::http::server::SocketContextUpgradeFactorySelector::instance()->add(new web::websocket::server::SocketContextUpgradeFactory(this));
 }
 
-void TikTakToeSubProtocolInterface::destroy() {
+void TikTakToeSubProtocolFactory::destroy() {
     delete this;
 }
 
-std::string TikTakToeSubProtocolInterface::name() {
+std::string TikTakToeSubProtocolFactory::name() {
     return NAME;
 }
 
-web::websocket::server::SubProtocolInterface::Role TikTakToeSubProtocolInterface::role() {
-    return web::websocket::server::SubProtocolInterface::Role::SERVER;
+web::websocket::server::SubProtocolFactory::Role TikTakToeSubProtocolFactory::role() {
+    return web::websocket::server::SubProtocolFactory::Role::SERVER;
 }
 
-void TikTakToeSubProtocolInterface::destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) {
+void TikTakToeSubProtocolFactory::destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) {
     delete tikTakToeSubProtocol;
 }
 
 extern "C" {
-    TikTakToeSubProtocolInterface* plugin() {
-        return new TikTakToeSubProtocolInterface();
+    TikTakToeSubProtocolFactory* plugin() {
+        return new TikTakToeSubProtocolFactory();
     }
 }

@@ -23,7 +23,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_compile_options(-Wno-psabi)
 
-add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolInterface.cpp
+add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
                          TikTakToeSubProtocol.cpp TikTakToeGameModel.cpp)
 
 target_include_directories(
