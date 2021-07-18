@@ -23,7 +23,7 @@
 
 #include <web/http/server/SocketContextUpgradeFactorySelector.h>
 #include <web/websocket/server/SocketContextUpgradeFactory.h>
-#include <web/websocket/server/SubProtocolSelector.h>
+#include <web/websocket/server/SubProtocolFactorySelector.h>
 
 #define NAME "tiktaktoe"
 
