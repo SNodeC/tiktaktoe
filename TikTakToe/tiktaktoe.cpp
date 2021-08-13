@@ -19,15 +19,10 @@
 #include "TikTakToeSubProtocolFactory.h"
 #include "config.h"
 
-#include <cstddef>
-#include <endian.h>
 #include <express/legacy/WebApp.h>
 #include <express/tls/WebApp.h>
-#include <iomanip>
-#include <iostream>
 #include <log/Logger.h>
 #include <net/SNodeC.h>
-#include <vector>
 
 int main(int argc, char* argv[]) {
     net::SNodeC::init(argc, argv);
@@ -74,9 +69,9 @@ int main(int argc, char* argv[]) {
 
     legacyApp.listen(8080, [](int err) -> void {
         if (err != 0) {
-            perror("Listen");
+            PLOG(ERROR) << "Listen";
         } else {
-            std::cout << "snode.c listening on port 8080" << std::endl;
+            VLOG(0) << "snode.c listening on port 8080";
         }
     });
 
@@ -120,9 +115,9 @@ int main(int argc, char* argv[]) {
 
     tlsApp.listen(8088, [](int err) -> void {
         if (err != 0) {
-            perror("Listen");
+            PLOG(ERROR) << "Listen";
         } else {
-            std::cout << "snode.c listening on port 8088" << std::endl;
+            VLOG(0) << "snode.c listening on port 8088";
         }
     });
 

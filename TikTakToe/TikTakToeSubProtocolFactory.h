@@ -33,11 +33,12 @@ private:
     Role role() override;
 
     web::websocket::SubProtocol* create() override;
+
     void destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) override;
 };
 
 extern "C" {
-    TikTakToeSubProtocolFactory* plugin();
+    web::websocket::server::SubProtocolFactory* plugin();
 }
 
 #endif // TIKTAKTOESUBPROTOCOLINTERFACE_H

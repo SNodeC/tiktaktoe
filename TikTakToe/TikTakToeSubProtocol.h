@@ -19,7 +19,7 @@
 #ifndef TIKTAKTOESUBPROTOCOL_H
 #define TIKTAKTOESUBPROTOCOL_H
 
-#include "TikTakToeGameModel.h"
+class TikTakToeGameModel;
 
 #include <net/timer/IntervalTimer.h>
 #include <web/websocket/server/SubProtocol.h>

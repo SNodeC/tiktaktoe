@@ -23,7 +23,6 @@
 
 #include <web/http/server/SocketContextUpgradeFactorySelector.h>
 #include <web/websocket/server/SocketContextUpgradeFactory.h>
-#include <web/websocket/server/SubProtocolFactorySelector.h>
 
 #define NAME "tiktaktoe"
 
@@ -52,7 +51,7 @@ void TikTakToeSubProtocolFactory::destroy(web::websocket::SubProtocol* tikTakToe
 }
 
 extern "C" {
-    TikTakToeSubProtocolFactory* plugin() {
+    web::websocket::server::SubProtocolFactory* plugin() {
         return new TikTakToeSubProtocolFactory();
     }
 }

@@ -18,6 +18,7 @@
 
 #include "TikTakToeSubProtocol.h"
 
+#include "TikTakToeGameModel.h"
 #include "config.h"
 
 #include <log/Logger.h>
