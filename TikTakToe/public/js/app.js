@@ -37,9 +37,7 @@ var updateBoard = () => {
       element.classList.add('game-board__cell--red')
     }
   }
-  
-  console.log(gameState);
-  
+    
   if(gameState.gameOver) {
       document.querySelector('.game-info__status').innerText = gameState.gameOver;
   }
