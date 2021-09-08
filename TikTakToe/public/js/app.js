@@ -9,6 +9,7 @@ if (location.protocol == "https:") {
 var gameState = {
   whosTurn: undefined,
   playerID: undefined,
+  gameOver: undefined,
   board: [0, 0, 0, 0, 0, 0, 0, 0, 0]
 };
 
@@ -36,6 +37,12 @@ var updateBoard = () => {
       element.classList.add('game-board__cell--red')
     }
   }
+  
+  console.log(gameState);
+  
+  if(gameState.gameOver) {
+      document.querySelector('.game-info__status').innerText = gameState.gameOver;
+  }
 }
 
 // This responds to the server push messages
@@ -53,6 +60,7 @@ ws.addEventListener('message', (message) => {
       loadingEl.style.display = 'block';
       gameState.whosTurn = action.whosTurn;
       gameState.board    = action.board;
+      gameState.gameOver = action.gameOver;
       updateBoard();
       loadingEl.style.display = 'none';
       break;

@@ -27,6 +27,11 @@
   font-size:   1.5rem;
   text-align: center;
 }
+.game-info__status {
+  font-weight: bold;
+  font-size:   1.5rem;
+  text-align: center;
+}
 
 .game-board {
   width:  500px;
