@@ -40,6 +40,7 @@ var updateBoard = () => {
     
   if(gameState.gameOver) {
       document.querySelector('.game-info__status').innerText = gameState.gameOver;
+      document.querySelector('.game-board').style.pointerEvents = "none";
   }
 }
 
@@ -79,5 +80,22 @@ ws.addEventListener('open', () => {
         cellID:   parseInt(element.dataset.id, 10)
       }
       ws.send(JSON.stringify(message));
+    })
+})
+
+ws.addEventListener('open', () => {
+  document
+    .querySelector('.reset-game')
+    .addEventListener('click', (event) => {
+        document.querySelector('.game-board').style.pointerEvents = "auto";
+
+        let element = event.target;
+        let message = {
+            type:     'reset-game',
+            playerID: gameState.playerID,
+        }
+        ws.send(JSON.stringify(message));
+        
+        location.reload();
     })
 })

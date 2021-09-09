@@ -100,6 +100,10 @@ void TikTakToeSubProtocol::onMessageEnd() {
         VLOG(0) << "SendMessage Dump: " << message.dump();
     }
 
+    if (action["type"] == "reset-game") {
+        gameModel.resetBoard();
+    }
+
     data.clear();
 }
 

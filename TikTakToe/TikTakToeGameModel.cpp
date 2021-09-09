@@ -42,7 +42,6 @@ void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
         } else {
             whosNext += 1;
         }
-        
     }
 }
 
