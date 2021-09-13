@@ -42,16 +42,12 @@ std::string TikTakToeSubProtocolFactory::name() {
     return NAME;
 }
 
-web::websocket::server::SubProtocolFactory::Role TikTakToeSubProtocolFactory::role() {
-    return web::websocket::server::SubProtocolFactory::Role::SERVER;
-}
-
 void TikTakToeSubProtocolFactory::destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) {
     delete tikTakToeSubProtocol;
 }
 
 extern "C" {
-    web::websocket::server::SubProtocolFactory* plugin() {
+    web::websocket::SubProtocolFactory* plugin() {
         return new TikTakToeSubProtocolFactory();
     }
 }

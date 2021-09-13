@@ -20,9 +20,10 @@
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
 #include <string> // for string
-#include <web/websocket/server/SubProtocolFactory.h>
+#include <web/websocket/SubProtocol.h>
+#include <web/websocket/SubProtocolFactory.h>
 
-class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFactory {
+class TikTakToeSubProtocolFactory : public web::websocket::SubProtocolFactory {
 public:
     TikTakToeSubProtocolFactory();
 
@@ -30,7 +31,6 @@ private:
     void destroy() override;
 
     std::string name() override;
-    Role role() override;
 
     web::websocket::SubProtocol* create() override;
 
@@ -38,7 +38,7 @@ private:
 };
 
 extern "C" {
-    web::websocket::server::SubProtocolFactory* plugin();
+    web::websocket::SubProtocolFactory* plugin();
 }
 
 #endif // TIKTAKTOESUBPROTOCOLINTERFACE_H
