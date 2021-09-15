@@ -26,21 +26,21 @@ TikTakToeGameModel TikTakToeGameModel::gameModel;
 void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
     if (player == players[whosNext]) {
         int cellValue = 0;
+        if(board[cellID] == 0){
+            if (player == "red") {
+                cellValue = 1;
+            } else if (player == "blue") {
+                cellValue = -1;
+            }
+             board[cellID] = cellValue;
+             
+             checkIfGameCompleted();
 
-        if (player == "red") {
-            cellValue = 1;
-        } else if (player == "blue") {
-            cellValue = -1;
-        }
-
-        board[cellID] = cellValue;
-        
-        checkIfGameCompleted();
-
-        if (whosNext >= 1) {
-            whosNext = 0;
-        } else {
-            whosNext += 1;
+            if (whosNext >= 1) {
+                whosNext = 0;
+            } else {
+                whosNext += 1;
+            }
         }
     }
 }
@@ -65,6 +65,10 @@ void TikTakToeGameModel::checkIfGameCompleted() {
         draw = true;
     }    
 }
+
+//bool TikTakToeGameModel::checkAvailabilityCell(int cellID){
+    //check if cell is still available
+  //  }
 
 bool TikTakToeGameModel::checkForWinner() {
     //Vertical
