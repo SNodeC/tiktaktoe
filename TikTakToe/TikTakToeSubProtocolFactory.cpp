@@ -23,15 +23,17 @@
 
 #include <web/http/server/SocketContextUpgradeFactorySelector.h>
 #include <web/websocket/server/SocketContextUpgradeFactory.h>
+#include <web/websocket/server/SubProtocolFactorySelector.h>
 
 #define NAME "tiktaktoe"
 
-web::websocket::SubProtocol* TikTakToeSubProtocolFactory::create() {
+TikTakToeSubProtocol* TikTakToeSubProtocolFactory::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
 TikTakToeSubProtocolFactory::TikTakToeSubProtocolFactory() {
-    web::http::server::SocketContextUpgradeFactorySelector::instance()->add(new web::websocket::server::SocketContextUpgradeFactory(this));
+    web::http::server::SocketContextUpgradeFactorySelector::instance()->add(new web::websocket::server::SocketContextUpgradeFactory(
+        reinterpret_cast<web::websocket::SubProtocolFactory<web::websocket::server::SubProtocol>*>(this)));
 }
 
 void TikTakToeSubProtocolFactory::destroy() {
@@ -42,12 +44,12 @@ std::string TikTakToeSubProtocolFactory::name() {
     return NAME;
 }
 
-void TikTakToeSubProtocolFactory::destroy(web::websocket::SubProtocol* tikTakToeSubProtocol) {
+void TikTakToeSubProtocolFactory::destroy(TikTakToeSubProtocol* tikTakToeSubProtocol) {
     delete tikTakToeSubProtocol;
 }
 
 extern "C" {
-    web::websocket::SubProtocolFactory* plugin() {
+    TikTakToeSubProtocolFactory* plugin() {
         return new TikTakToeSubProtocolFactory();
     }
 }

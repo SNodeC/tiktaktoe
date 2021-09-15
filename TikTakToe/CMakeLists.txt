@@ -32,7 +32,7 @@ target_include_directories(
 
 target_link_libraries(
   tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES} ${SNODEC_WEBSOCKET_LIBRARIES}
-                   ${OPENSSL_LIBRARIES})
+                   ${OPENSSL_LIBRARIES} dl)
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 

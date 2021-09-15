@@ -21,8 +21,12 @@
 
 class TikTakToeGameModel;
 
-#include <net/timer/IntervalTimer.h>
+//#include <net/timer/IntervalTimer.h>
 #include <web/websocket/server/SubProtocol.h>
+
+namespace net::timer {
+    class Timer;
+} // namespace net::timer
 
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:

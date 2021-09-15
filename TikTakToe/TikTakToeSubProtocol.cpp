@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <log/Logger.h>
+#include <net/timer/IntervalTimer.h> // for IntervalTimer
 #include <nlohmann/json.hpp>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
