@@ -22,7 +22,7 @@ var initializeBoard = () => {
 
 // This function updates the board and whos turn it is.
 var updateBoard = () => {
-   
+
   let myTurn = gameState.whosTurn === gameState.playerID ? "My Turn" : "Opponents Turn"
   document.querySelector('.game-info__players-turn').innerText = myTurn;
 
@@ -47,9 +47,10 @@ var updateBoard = () => {
 
 // This responds to the server push messages
 ws.addEventListener('message', (message) => {
+    
   let action = JSON.parse(message.data);
   let loadingEl = document.querySelector('.game-loading');
-
+  
   switch(action.type) {
     case 'setup':
       gameState = action.playerData;
@@ -89,14 +90,12 @@ ws.addEventListener('open', () => {
     .querySelector('.reset-game')
     .addEventListener('click', (event) => {
         document.querySelector('.game-board').style.pointerEvents = "auto";
-        console.log(gameState.board + " board");
+        document.querySelector('.game-info__status').innerText = "Status: Game in Progress";
         let element = event.target;
-        
-        console.log("old: "+ gameState.playerID);
         let message = {
             type:     'reset-game',
             playerID: gameState.playerID,
         }
-        ws.send(JSON.stringify(message));
+        setTimeout(function(){ ws.send(JSON.stringify(message)); }, 1000);
     })
 })
