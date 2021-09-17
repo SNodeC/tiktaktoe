@@ -1,22 +1,22 @@
 #ifndef CONFIG
 #define CONFIG
 
-#cmakedefine CMAKE_SOURCE_DIR "@CMAKE_SOURCE_DIR@/"
+#cmakedefine CMAKE_SOURCE_DIR "/home/voc/projects/ServerVoc/"
 
-#define SNODEC_CMAKE_SOURCE_DIR "/home/voc/projects/ServerVoc/"
+#define SERVERROOT CMAKE_SOURCE_DIR "docs/html"
 
-#define SERVERROOT SNODEC_CMAKE_SOURCE_DIR "docs/html"
+#define SERVERCAFILE CMAKE_SOURCE_DIR "certs/snode.c_-_Root_CA.crt"
+#define SERVERCERTF CMAKE_SOURCE_DIR "certs/snode.c_-_server.pem"
+#define SERVERKEYF CMAKE_SOURCE_DIR "certs/snode.c_-_server.key.encrypted.pem"
 
-#define SERVERCAFILE SNODEC_CMAKE_SOURCE_DIR "certs/snode.c_-_Root_CA.crt"
-#define SERVERCERTF SNODEC_CMAKE_SOURCE_DIR "certs/snode.c_-_server.pem"
-#define SERVERKEYF SNODEC_CMAKE_SOURCE_DIR "certs/snode.c_-_server.key.encrypted.pem"
-
-#define CLIENTCAFILE SNODEC_CMAKE_SOURCE_DIR "certs/snode.c_-_Root_CA.crt"
-#define CLIENTCERTF SNODEC_CMAKE_SOURCE_DIR "certs/snode.c_-_client.pem"
-#define CLIENTKEYF SNODEC_CMAKE_SOURCE_DIR "certs/snode.c_-_client.key.encrypted.pem"
+#define CLIENTCAFILE CMAKE_SOURCE_DIR "certs/snode.c_-_Root_CA.crt"
+#define CLIENTCERTF CMAKE_SOURCE_DIR "certs/snode.c_-_client.pem"
+#define CLIENTKEYF CMAKE_SOURCE_DIR "certs/snode.c_-_client.key.encrypted.pem"
 
 #define KEYFPASS "snode.c"
 
 #define MAX_FLYING_PINGS 3
+
+#define TIKTAKTOEPATH "/home/student/projects/tiktaktoe/tiktaktoe/websocket-tic-tac-toe/public"
 
 #endif

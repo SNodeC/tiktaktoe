@@ -20,6 +20,7 @@
 
 #include <map>               // for operator==
 #include <nlohmann/json.hpp> // for basic_json<>::object_t, basic_json<>::v...
+#include <log/Logger.h>
 
 TikTakToeGameModel TikTakToeGameModel::gameModel;
 
@@ -33,12 +34,14 @@ void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
             cellValue = -1;
         }
 
-        board[cellID] = cellValue;
-
-        if (whosNext >= 1) {
-            whosNext = 0;
-        } else {
-            whosNext += 1;
+        if(board[cellID]== 0 && !gameEnded){
+            board[cellID] = cellValue;
+            gameWon(cellValue);
+            if (whosNext >= 1) {
+                whosNext = 0;
+            } else {
+                whosNext += 1;
+            }
         }
     }
 }
@@ -49,6 +52,45 @@ void TikTakToeGameModel::resetBoard() {
         board[i] = 0;
     }
 }
+void TikTakToeGameModel::gameWon(int cellValue) {
+
+    int playerNum;
+        if (whosNext >= 1) {
+            playerNum = 1;
+        } else {
+            playerNum = 0;
+        }
+    
+    if (board[0]==cellValue && board[1]==cellValue && board[2]==cellValue){
+           gameEnded = true;
+           
+    }else if (board[3]==cellValue && board[4]==cellValue && board[5]==cellValue){
+           gameEnded = true;
+
+    }else if (board[6]==cellValue && board[7]==cellValue && board[8]==cellValue){
+           gameEnded = true;
+
+    }else if (board[0]==cellValue && board[3]==cellValue && board[6]==cellValue){
+           gameEnded = true;
+           
+    }else if (board[1]==cellValue && board[4]==cellValue && board[7]==cellValue){
+           gameEnded = true;
+           
+    }else if (board[2]==cellValue && board[5]==cellValue && board[8]==cellValue){
+           gameEnded = true;
+           
+    } else if (board[0]==cellValue && board[4]==cellValue && board[8]==cellValue){
+           gameEnded = true;
+           
+    }else if (board[2]==cellValue && board[4]==cellValue && board[6]==cellValue){
+           gameEnded = true;
+           
+    }else if (board[0] == !cellValue && board[1] == !cellValue  && board[2] == !cellValue && board[3] == !cellValue && board[4] == !cellValue && board[5] == !cellValue && board[6] == !cellValue && board[7] == !cellValue  && board[8] == !cellValue) {
+           gameEnded = true;
+           
+    }
+
+}
 
 nlohmann::json TikTakToeGameModel::updateClientState() {
     nlohmann::json message;
@@ -56,7 +98,7 @@ nlohmann::json TikTakToeGameModel::updateClientState() {
     message["type"] = "update";
     message["whosTurn"] = players[whosNext];
     message["board"] = board;
-
+    
     return message;
 }
 

@@ -29,12 +29,15 @@ protected:
 public:
     void playersMove(const std::string& player, int cellID);
     void resetBoard();
+    void gameWon(int cellValue);
     nlohmann::json updateClientState();
 
     static TikTakToeGameModel& getGameModel();
 
 protected:
+    bool gameEnded = false;
     std::string players[2] = {"red", "blue"};
+    std::string state[3] = {"Won", "Lost", "Draw"};
     int whosNext = 0;
     int numPlayers = 0;
     int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};

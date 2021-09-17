@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
             req.url = "/index.html";
         }
 
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res.sendFile(TIKTAKTOEPATH + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
             }
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     });
 
     legacyApp.get("/stylesheets", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res.sendFile(TIKTAKTOEPATH + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
             }
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
     });
 
     legacyApp.get("/js", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res.sendFile(TIKTAKTOEPATH + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
             }
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
             req.url = "/index.html";
         }
 
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res.sendFile(TIKTAKTOEPATH + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
             }
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
     });
 
     tlsApp.get("/stylesheets", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res.sendFile(TIKTAKTOEPATH + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
             }
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
     });
 
     tlsApp.get("/js", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res.sendFile(TIKTAKTOEPATH + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
             }

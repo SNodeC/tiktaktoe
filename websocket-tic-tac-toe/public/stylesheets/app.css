@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+html{
+  font-family: 'Roboto', sans-serif;
+}
 .game-title {
   font-weight: bold;
   font-size: 2.5rem;
@@ -28,6 +32,13 @@
   text-align: center;
 }
 
+.game-info__state {
+  font-weight: bold;
+  font-size: 3rem;
+  text-align: center;
+  color: blue;
+}
+
 .game-board {
   width:  500px;
   height: 500px;
@@ -37,11 +48,34 @@
 }
 
 .game-board__cell--red {
-  background: red;
+  background: white;
+  width: 170px;
+  height: 170px;
+  position: relative;
+}
+.game-board__cell--red:after {
+  content: '';
+  height: 170px;
+  border-left: 4px solid red;
+  position: absolute;
+  transform: rotate(45deg);
+  left: 78px;
+}
+
+.game-board__cell--red:before {
+  content: '';
+  height: 170px;
+  border-left: 4px solid red;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 78px;
 }
 
 .game-board__cell--blue {
   background: blue;
+  border-radius: 50%;
+  width: 170px;
+  height: 170px;
 }
 
 .game-loading {
