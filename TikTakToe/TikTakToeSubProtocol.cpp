@@ -88,17 +88,14 @@ void TikTakToeSubProtocol::onMessageEnd() {
 
     if (action["type"] == "move") {
         gameModel.playersMove(action["playerID"], action["cellID"]);
-        nlohmann::json message = gameModel.updateClientState();
-
-        /* // also possible
-                forEachClient([&message](SubProtocol* client) {
-                    client->sendMessage(message.dump());
-                });
-        */
-
-        sendBroadcast(message.dump());
-        VLOG(0) << "SendMessage Dump: " << message.dump();
     }
+
+    if (action["type"] == "reset-game") {
+        gameModel.resetBoard();
+    }
+    nlohmann::json message = gameModel.updateClientState();
+    sendBroadcast(message.dump());
+    VLOG(0) << "SendMessage Dump: " << message.dump();
 
     data.clear();
 }

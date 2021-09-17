@@ -26,29 +26,86 @@ TikTakToeGameModel TikTakToeGameModel::gameModel;
 void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
     if (player == players[whosNext]) {
         int cellValue = 0;
+        if(board[cellID] == 0){
+            if (player == "red") {
+                cellValue = 1;
+            } else if (player == "blue") {
+                cellValue = -1;
+            }
+             board[cellID] = cellValue;
+             
+             checkIfGameCompleted();
 
-        if (player == "red") {
-            cellValue = 1;
-        } else if (player == "blue") {
-            cellValue = -1;
-        }
-
-        board[cellID] = cellValue;
-
-        if (whosNext >= 1) {
-            whosNext = 0;
-        } else {
-            whosNext += 1;
+            if (whosNext >= 1) {
+                whosNext = 0;
+            } else {
+                whosNext += 1;
+            }
         }
     }
 }
 
 void TikTakToeGameModel::resetBoard() {
     whosNext = 0;
+    gameFinished= false;
     for (int i = 0; i < 9; i++) {
         board[i] = 0;
     }
 }
+
+void TikTakToeGameModel::checkIfGameCompleted() {
+    //Check for a winner
+    if(checkForWinner()){
+        gameFinished = true;
+        winner = players[whosNext];
+    }        
+    
+    //Check for a draw
+    if(checkIfBoardFull() && !gameFinished) {
+        gameFinished = true;
+        draw = true;
+    }    
+}
+
+
+bool TikTakToeGameModel::checkForWinner() {
+    //Vertical
+    for(int i = 0; i < 3; i++) {
+        if(board[i] != 0 && board[0 + i] == board [3 + i] && board[3 + i] == board[6 + i]){
+            return true;
+        }
+    }
+    
+    //Horizontal
+    for(int i = 0; i < 3; i++) {
+        if(board[i * 3] != 0 && board[i * 3] == board [i * 3 + 1] && board[i * 3 + 1] == board[i * 3 + 2]){
+            return true;
+        }
+    }
+    
+    //Diagonal left to right
+    if(board[0] != 0 && board[0] == board[4] && board[4] == board[8]) {
+        return true;
+    }
+    
+    //Diagonal right to left
+    if(board[2] != 0 && board[2] == board[4] && board[4] == board[6]) {
+        return true;
+    }
+    
+    return false;
+}
+
+
+bool TikTakToeGameModel::checkIfBoardFull() {
+    for(int i = 0; i < 9; i++) {
+        if(board[i] == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 nlohmann::json TikTakToeGameModel::updateClientState() {
     nlohmann::json message;
@@ -56,6 +113,17 @@ nlohmann::json TikTakToeGameModel::updateClientState() {
     message["type"] = "update";
     message["whosTurn"] = players[whosNext];
     message["board"] = board;
+    
+    if(gameFinished) {
+        if(draw) {
+            message["gameOver"] = "Nobody won, it's a draw!";
+        } else {
+            message["gameOver"] = "Congratulations, player " + winner + " won!";
+        }
+    }
+    else {
+        message["gameOver"] = false;
+    }
 
     return message;
 }

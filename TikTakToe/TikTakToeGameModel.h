@@ -29,6 +29,9 @@ protected:
 public:
     void playersMove(const std::string& player, int cellID);
     void resetBoard();
+    void checkIfGameCompleted();
+    bool checkForWinner();
+    bool checkIfBoardFull();
     nlohmann::json updateClientState();
 
     static TikTakToeGameModel& getGameModel();
@@ -38,6 +41,9 @@ protected:
     int whosNext = 0;
     int numPlayers = 0;
     int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    bool gameFinished = false; //if one player won, or all fields have been filled
+    bool draw = false; //all fields are filled, but no player won
+    std::string winner = "";
 
     friend class TikTakToeSubProtocol;
 
