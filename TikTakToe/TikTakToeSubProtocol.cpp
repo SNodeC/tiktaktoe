@@ -102,6 +102,10 @@ void TikTakToeSubProtocol::onMessageEnd() {
 
     if (action["type"] == "reset-game") {
         gameModel.resetBoard();
+        nlohmann::json message = gameModel.updateClientState();
+        sendBroadcast(message.dump());
+        VLOG(0) << "SendMessage Dump: " << message.dump();
+        
     }
 
     data.clear();

@@ -24,6 +24,7 @@
 TikTakToeGameModel TikTakToeGameModel::gameModel;
 
 void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
+   
     if (player == players[whosNext]) {
         int cellValue = 0;
         if(board[cellID] == 0){
