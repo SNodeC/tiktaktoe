@@ -89,15 +89,9 @@ void TikTakToeSubProtocol::onMessageEnd() {
     if (action["type"] == "move") {
         gameModel.playersMove(action["playerID"], action["cellID"]);
         nlohmann::json message = gameModel.updateClientState();
-
-        /* // also possible
-                forEachClient([&message](SubProtocol* client) {
-                    client->sendMessage(message.dump());
-                });
-        */
-
         sendBroadcast(message.dump());
         VLOG(0) << "SendMessage Dump: " << message.dump();
+        
     }
 
     data.clear();
@@ -113,6 +107,7 @@ void TikTakToeSubProtocol::onPongReceived() {
 }
 
 void TikTakToeSubProtocol::onDisconnected() {
+    nlohmann::json json;
     VLOG(0) << "TikTakToe on disconnected:";
 
     if (activePlayer) {
@@ -121,7 +116,7 @@ void TikTakToeSubProtocol::onDisconnected() {
         if (gameModel.numPlayers == 0) {
             gameModel.resetBoard();
         }
-    }
+    } 
 
     VLOG(0) << "\tServer: " + getLocalAddressAsString();
     VLOG(0) << "\tClient: " + getRemoteAddressAsString();
