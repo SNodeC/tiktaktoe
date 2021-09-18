@@ -27,12 +27,14 @@ add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
                          TikTakToeSubProtocol.cpp TikTakToeGameModel.cpp)
 
 target_include_directories(
-  tiktaktoe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-                    ${SNODEC_EXPRESS_INCLUDES} ${OPENSSL_INCLUDE_DIR})
+  tiktaktoe
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
+          ${SNODEC_EXPRESS_INCLUDES} ${SNODEC_WEBSOCKET_INCLUDES}
+          ${OPENSSL_INCLUDE_DIR})
 
 target_link_libraries(
   tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES} ${SNODEC_WEBSOCKET_LIBRARIES}
-                   ${OPENSSL_LIBRARIES} dl)
+                   ${OPENSSL_LIBRARIES})
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 

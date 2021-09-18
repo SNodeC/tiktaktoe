@@ -22,9 +22,9 @@
 #include "TikTakToeSubProtocol.h"
 
 #include <string> // for string
-#include <web/websocket/SubProtocolFactory.h>
+#include <web/websocket/server/SubProtocolFactory.h>
 
-class TikTakToeSubProtocolFactory : public web::websocket::SubProtocolFactory<TikTakToeSubProtocol> {
+class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFactory {
 public:
     TikTakToeSubProtocolFactory();
 
@@ -33,9 +33,9 @@ private:
 
     std::string name() override;
 
-    TikTakToeSubProtocol* create() override;
+    web::websocket::server::SubProtocol* create() override;
 
-    void destroy(TikTakToeSubProtocol* tikTakToeSubProtocol) override;
+    void destroy(web::websocket::server::SubProtocol* tikTakToeSubProtocol) override;
 };
 
 extern "C" {
