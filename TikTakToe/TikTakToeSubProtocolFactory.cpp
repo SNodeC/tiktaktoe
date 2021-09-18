@@ -1,9 +1,10 @@
 /*
- * tiktaktoe - a game using SnodeC
- * Copyright (C) 2021 Volker Christian <me@vchrist.at>
+ * TikTakToe - a demo game using the snode.c framework
+ * Copyright (C) 2020, 2021 Volker Christian <me@vchrist.at>
+ * Copyright (C) 2021 Ertug Obalar, Jens Patzelt and Milad Tousi
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
+ * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -26,6 +27,10 @@
 
 #define NAME "tiktaktoe"
 
+web::websocket::server::SubProtocol* TikTakToeSubProtocolFactory::create() {
+    return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
+}
+
 TikTakToeSubProtocolFactory::TikTakToeSubProtocolFactory() {
     web::http::server::SocketContextUpgradeFactorySelector::instance()->add(new web::websocket::server::SocketContextUpgradeFactory(this));
 }
@@ -38,16 +43,12 @@ std::string TikTakToeSubProtocolFactory::name() {
     return NAME;
 }
 
-web::websocket::server::SubProtocol* TikTakToeSubProtocolFactory::create() {
-    return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
-}
-
 void TikTakToeSubProtocolFactory::destroy(web::websocket::server::SubProtocol* tikTakToeSubProtocol) {
     delete tikTakToeSubProtocol;
 }
 
 extern "C" {
-    TikTakToeSubProtocolFactory* plugin() {
+    web::websocket::server::SubProtocolFactory* plugin() {
         return new TikTakToeSubProtocolFactory();
     }
 }

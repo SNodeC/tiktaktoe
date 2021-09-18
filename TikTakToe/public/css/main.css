@@ -1,0 +1,183 @@
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/opensans/v23/mem8YaGs126MiZpBA-UFVZ0b.woff2) format('woff2');
+}
+
+@keyframes appear {
+    from {
+        transform: scale(0.5);
+    }
+    to {
+        transform: scale(1.0);
+    }
+}
+
+@keyframes blink {
+    50% {
+        visibility: hidden;
+    }
+}
+
+@keyframes border-blink {
+    50% {
+        border-color: #323232;
+    }
+}
+
+
+body {
+    color: #FFFFFF;
+    background-color: #323232;
+    font-family: "Open Sans";
+    text-align: center;
+}
+
+
+.game {
+    display: inline-block;
+    width: 600px;
+    height: 600px;
+    margin-top: 50px;
+}
+
+
+/* BOARD */
+
+.game-board {
+    width: 100%;
+    height: 100%;
+}
+
+.game-board-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    float: left;
+    box-sizing: border-box;
+    border-width: 5px;
+    border-color: #F2F2F2;
+    cursor: pointer;
+}
+.game-board-cell::after {
+    display: inline-block;
+    height: 125px;
+    width: 125px;
+}
+
+.cell-content__o::after {
+    content: url("circle.svg");
+}
+.cell-content__x::after {
+    content: url("cancel.svg");
+}
+
+.cell-content__o::after,
+.cell-content__x::after {
+    animation: appear 0.2s cubic-bezier(0.5, 1.8, 0.1, 1.1);
+}
+
+#game.state--tie .game-board-cell {
+    animation: border-blink 0.3s steps(1) 3;
+}
+#game.state--win .game-board-cell.cell--win::after {
+    animation: blink 0.3s steps(1) 3;
+}
+#game.state--tie .game-board-cell:not(.cell--win)::after,
+#game.state--win .game-board-cell:not(.cell--win)::after {
+    opacity: 0.5;
+}
+
+
+.border--bottom {
+    border-bottom-style: solid;
+}
+.border--top {
+    border-top-style: solid;
+}
+.border--left {
+    border-left-style: solid;
+}
+.border--right {
+    border-right-style: solid;
+}
+
+
+/* PLAYER*/
+
+.game-player {
+    margin-top: 50px;
+    height: 90px;
+}
+
+.game-player__header {
+    font-size: 1.25em;
+    margin-bottom: 5px;
+}
+
+.game-player__symbol::after {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    animation: appear 0.2s cubic-bezier(0.5, 1.8, 0.1, 1.1);
+}
+
+#player[data="player_1"] > .game-player__symbol::after {
+    content: url("cancel.svg");
+}
+#player[data="player_2"] > .game-player__symbol::after {
+    content: url("circle.svg");
+}
+
+
+/* SCORE */
+
+.game-score {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.game-score-cell {
+    width: 150px;
+    opacity: 0.5;
+}
+
+.game-score-cell__header {
+    display: block;
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+.game-score-cell__symbol {
+    font-weight: bold;
+    text-transform: lowercase;
+}
+
+#score .player_1 .game-score-cell__symbol {
+    color: tomato;
+}
+#score .player_2 .game-score-cell__symbol {
+    color: skyblue;
+}
+
+.game-score-cell__number {
+    font-size: 2.0em;
+    height: 60px;
+}
+
+#score.ties .ties .game-score-cell__number,
+#score.player_1 .player_1 .game-score-cell__number,
+#score.player_2 .player_2 .game-score-cell__number {
+    animation: appear .3s cubic-bezier(0.5, 4.0, 0.1, 1.1);
+}
+
+#game.state--tie .game-score-cell,
+#game.state--win .game-score-cell,
+#score[data="player_1"] .player_1,
+#score[data="player_2"] .player_2 {
+    opacity: 1.0;
+}

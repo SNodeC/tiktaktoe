@@ -1,9 +1,10 @@
 /*
- * tiktaktoe - a game using SnodeC
- * Copyright (C) 2021 Volker Christian <me@vchrist.at>
+ * TikTakToe - a demo game using the snode.c framework
+ * Copyright (C) 2020, 2021 Volker Christian <me@vchrist.at>
+ * Copyright (C) 2021 Ertug Obalar, Jens Patzelt and Milad Tousi
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
+ * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -22,8 +23,9 @@
 #include "config.h"
 
 #include <log/Logger.h>
-#include <net/timer/IntervalTimer.h> // for IntervalTimer
 #include <nlohmann/json.hpp>
+#include <web/http/server/Request.h>
+#include <web/http/server/Response.h>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::websocket::server::SubProtocol(name)
@@ -45,55 +47,58 @@ TikTakToeSubProtocol::~TikTakToeSubProtocol() {
 }
 
 void TikTakToeSubProtocol::onConnected() {
-    VLOG(0) << "TikTakToe on connected:";
+    // VLOG(0) << "TikTakToe on connected:";
 
-    VLOG(0) << "\tServer: " + getLocalAddressAsString();
-    VLOG(0) << "\tClient: " + getRemoteAddressAsString();
+    // VLOG(0) << "\tServer: " + getLocalAddressAsString();
+    // VLOG(0) << "\tClient: " + getRemoteAddressAsString();
 
-    VLOG(0) << "\tNumPlayers: " << gameModel.numPlayers;
+    // VLOG(0) << "\tNumPlayers: " << gameModel.numPlayers;
 
     if (gameModel.numPlayers < 2) {
         nlohmann::json json;
 
-        json["type"] = "setup";
-        json["playerData"]["whosTurn"] = gameModel.players[gameModel.whosNext];
-        json["playerData"]["playerID"] = gameModel.players[gameModel.numPlayers++];
-        json["playerData"]["board"] = gameModel.board;
-
-        VLOG(0) << "Json: " << json.dump();
+        json["board"] = gameModel.board;
+        json["score"] = gameModel.score;
+        json["state"] = gameModel.state;
+        json["winner"] = gameModel.winner;
+        json["leader"] = gameModel.players[gameModel.whosNext];
+        json["player"] = gameModel.players[gameModel.numPlayers++];
 
         sendMessage(json.dump());
-
         activePlayer = true;
+
+        VLOG(0) << "JSON: " << json.dump();
     } else {
         sendClose();
+
+        VLOG(0) << "sendClose";
     }
 }
 
-void TikTakToeSubProtocol::onMessageStart(int opCode) {
-    VLOG(0) << "TikTakToe on Message Start - OpCode: " << opCode;
+void TikTakToeSubProtocol::onMessageStart([[maybe_unused]] int opCode) {
+    // VLOG(0) << "TikTakToe on Message Start - OpCode: " << opCode;
 }
 
-void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) {
+void TikTakToeSubProtocol::onMessageData(const char* junk, size_t junkLen) {
     data += std::string(junk, junkLen);
 }
 
 void TikTakToeSubProtocol::onMessageEnd() {
-    VLOG(0) << "TikTakToe on Data: " << data;
+    // VLOG(0) << "TikTakToe on Data: " << data;
 
     nlohmann::json action = nlohmann::json::parse(data);
 
     VLOG(0) << "Action dump: " << action.dump();
 
     if (action["type"] == "move") {
-        gameModel.playersMove(action["playerID"], action["cellID"]);
+        gameModel.playersMove(action["player"], action["cell"]);
         nlohmann::json message = gameModel.updateClientState();
 
-        /* // also possible
-                forEachClient([&message](SubProtocol* client) {
-                    client->sendMessage(message.dump());
-                });
-        */
+        sendBroadcast(message.dump());
+        VLOG(0) << "SendMessage Dump: " << message.dump();
+    } else if (action["type"] == "reset") {
+        gameModel.resetBoard();
+        nlohmann::json message = gameModel.updateClientState();
 
         sendBroadcast(message.dump());
         VLOG(0) << "SendMessage Dump: " << message.dump();
@@ -107,12 +112,12 @@ void TikTakToeSubProtocol::onMessageError(uint16_t errnum) {
 }
 
 void TikTakToeSubProtocol::onPongReceived() {
-    VLOG(0) << "TikTakToe on Pong received";
+    // VLOG(0) << "TikTakToe on Pong received";
     flyingPings = 0;
 }
 
 void TikTakToeSubProtocol::onDisconnected() {
-    VLOG(0) << "TikTakToe on disconnected:";
+    // VLOG(0) << "TikTakToe on disconnected:";
 
     if (activePlayer) {
         gameModel.numPlayers--;
@@ -122,6 +127,6 @@ void TikTakToeSubProtocol::onDisconnected() {
         }
     }
 
-    VLOG(0) << "\tServer: " + getLocalAddressAsString();
-    VLOG(0) << "\tClient: " + getRemoteAddressAsString();
+    // VLOG(0) << "\tServer: " + getLocalAddressAsString();
+    // VLOG(0) << "\tClient: " + getRemoteAddressAsString();
 }

@@ -1,9 +1,10 @@
 /*
- * tiktaktoe - a game using SnodeC
- * Copyright (C) 2021 Volker Christian <me@vchrist.at>
+ * TikTakToe - a demo game using the snode.c framework
+ * Copyright (C) 2020, 2021 Volker Christian <me@vchrist.at>
+ * Copyright (C) 2021 Ertug Obalar, Jens Patzelt and Milad Tousi
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
+ * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -19,9 +20,7 @@
 #ifndef TIKTAKTOESUBPROTOCOLINTERFACE_H
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
-#include "TikTakToeSubProtocol.h"
-
-#include <string> // for string
+#include <string>
 #include <web/websocket/server/SubProtocolFactory.h>
 
 class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFactory {
@@ -39,7 +38,7 @@ private:
 };
 
 extern "C" {
-    TikTakToeSubProtocolFactory* plugin();
+    web::websocket::server::SubProtocolFactory* plugin();
 }
 
-#endif // TIKTAKTOESUBPROTOCOLINTERFACE_H
+#endif

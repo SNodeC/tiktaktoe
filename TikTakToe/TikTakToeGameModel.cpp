@@ -1,9 +1,10 @@
 /*
- * tiktaktoe - a game using SnodeC
- * Copyright (C) 2021 Volker Christian <me@vchrist.at>
+ * TikTakToe - a demo game using the snode.c framework
+ * Copyright (C) 2020, 2021 Volker Christian <me@vchrist.at>
+ * Copyright (C) 2021 Ertug Obalar, Jens Patzelt and Milad Tousi
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
+ * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -18,44 +19,138 @@
 
 #include "TikTakToeGameModel.h"
 
+#include <log/Logger.h>
 #include <map>               // for operator==
 #include <nlohmann/json.hpp> // for basic_json<>::object_t, basic_json<>::v...
 
 TikTakToeGameModel TikTakToeGameModel::gameModel;
 
-void TikTakToeGameModel::playersMove(const std::string& player, int cellID) {
+void TikTakToeGameModel::playersMove(const std::string& player, int cell) {
     if (player == players[whosNext]) {
-        int cellValue = 0;
+        board[cell] = whosNext == 0 ? 1 : -1;
 
-        if (player == "red") {
-            cellValue = 1;
-        } else if (player == "blue") {
-            cellValue = -1;
+        switch (checkState(board)) {
+            case 1:
+                state = "update";
+                break;
+
+            case 2:
+                state = "tie";
+                score[1]++;
+                break;
+
+            case 3:
+                state = "win";
+                if (whosNext == 0)
+                    score[0]++;
+                else
+                    score[2]++;
+                winner = player;
+                break;
         }
 
-        board[cellID] = cellValue;
-
-        if (whosNext >= 1) {
-            whosNext = 0;
-        } else {
-            whosNext += 1;
-        }
+        whosNext = whosNext == 0 ? 1 : 0;
     }
 }
 
+int TikTakToeGameModel::checkState(int board[]) {
+    int count = 0;
+
+    // Horizontal Win Check
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            count += board[i * 3 + j];
+        }
+
+        if (count == 3 || count == -3) {
+            for (int j = 0; j < 3; j++) {
+                board[i * 3 + j] *= 2;
+            }
+
+            return 3;
+        } else {
+            count = 0;
+        }
+    }
+
+    // Vertical Win Check
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            count += board[i + j * 3];
+        }
+
+        if (count == 3 || count == -3) {
+            for (int j = 0; j < 3; j++) {
+                board[i + j * 3] *= 2;
+            }
+
+            return 3;
+        } else {
+            count = 0;
+        }
+    }
+
+    //  Left Diagonal Win Check
+    {
+        for (int i = 0; i < 3; i++) {
+            count += board[i * 4];
+        }
+
+        if (count == 3 || count == -3) {
+            for (int i = 0; i < 3; i++) {
+                board[i * 4] *= 2;
+            }
+
+            return 3;
+        } else {
+            count = 0;
+        }
+    }
+
+    // Right Diagonal Win Check
+    {
+        for (int i = 0; i < 3; i++) {
+            count += board[i * 2 + 2];
+        }
+
+        if (count == 3 || count == -3) {
+            for (int i = 0; i < 3; i++) {
+                board[i * 2 + 2] *= 2;
+            }
+
+            return 3;
+        } else {
+            count = 0;
+        }
+    }
+
+    // Ongoing Check
+    for (int i = 0; i < 9; i++) {
+        if (board[i] == 0)
+            return 1;
+    }
+
+    // Return Tie
+    return 2;
+}
+
 void TikTakToeGameModel::resetBoard() {
-    whosNext = 0;
     for (int i = 0; i < 9; i++) {
         board[i] = 0;
     }
+
+    state = "reset";
+    winner = "";
 }
 
 nlohmann::json TikTakToeGameModel::updateClientState() {
     nlohmann::json message;
 
-    message["type"] = "update";
-    message["whosTurn"] = players[whosNext];
     message["board"] = board;
+    message["score"] = score;
+    message["state"] = state;
+    message["winner"] = winner;
+    message["leader"] = players[whosNext];
 
     return message;
 }

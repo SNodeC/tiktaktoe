@@ -1,40 +1,64 @@
-<html>
-  <head>
-    <title>Websocket Tic Tac Toe</title>
-    <link rel="stylesheet" href="stylesheets/reset.css">
-    <link rel="stylesheet" href="stylesheets/app.css">
-  </head>
-  <body>
-    <h1 class="game-title">Websocket Tic Tac Toe</h1>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <title>IM510: NDS - Tic Tac Toe</title>
+        <meta charset="utf-8">
+        <meta name="author" content="Jens Patzelt, Ertug Obalar, Milad Tousi">
+        <meta name="expires" content="0">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <div class="game">
-      <table class="game-board">
-        <tr>
-          <td class="game-board__cell" data-id="0"></td>
-          <td class="game-board__cell" data-id="1"></td>
-          <td class="game-board__cell" data-id="2"></td>
-        </tr>
-        <tr>
-          <td class="game-board__cell" data-id="3"></td>
-          <td class="game-board__cell" data-id="4"></td>
-          <td class="game-board__cell" data-id="5"></td>
-        </tr>
-        <tr>
-          <td class="game-board__cell" data-id="6"></td>
-          <td class="game-board__cell" data-id="7"></td>
-          <td class="game-board__cell" data-id="8"></td>
-        </tr>
-      </table>
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/script.js"></script>
 
-      <div class="game-info">
-        <div class="game-info__players-name">Player Name</div>
-        <div class="game-info__players-turn">Player Turn</div>
-      </div>
-    </div>
+        <link rel="icon" href="favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
 
-    <div class="game-loading">
-      <div class="loader">Loading...</div>
-    </div>
-    <script src="js/app.js"></script>
-  </body>
+    <body>
+        <h2 class="title">IM510: Networked/Distributed Systems - Tic Tac Toe</h2>
+
+        <div class="game" id="game">
+            <div class="game-board" id="board">
+                <div data-id="0" class="game-board-cell border--bottom border--right"></div>
+                <div data-id="1" class="game-board-cell border--bottom"></div>
+                <div data-id="2" class="game-board-cell border--bottom border--left"></div>
+
+                <div data-id="3" class="game-board-cell border--right"></div>
+                <div data-id="4" class="game-board-cell"></div>
+                <div data-id="5" class="game-board-cell border--left"></div>
+
+                <div data-id="6" class="game-board-cell border--top border--right"></div>
+                <div data-id="7" class="game-board-cell border--top"></div>
+                <div data-id="8" class="game-board-cell border--top border--left"></div>
+            </div>
+
+            <div class="game-player" id="player">
+                <div class="game-player__header">You are Player</div>
+                <div class="game-player__symbol"></div>
+            </div>
+
+            <div class="game-score" id="score">
+                <div class="game-score-cell player_1">
+                    <div class="game-score-cell__header">Player (<span class="game-score-cell__symbol">x</span>)</div>
+                    <div class="game-score-cell__number"></div>
+                </div>
+                <div class="game-score-cell ties">
+                    <div class="game-score-cell__header">Ties</div>
+                    <div class="game-score-cell__number"></div>
+                </div>
+                <div class="game-score-cell player_2">
+                    <div class="game-score-cell__header">Player (<span class="game-score-cell__symbol">o</span>)</div>
+                    <div class="game-score-cell__number"></div>
+                </div>
+            </div>
+
+            <div class="game-audio" id="audio">
+                <audio id="note-high" src="sfx/note-high.mp3"></audio>
+                <audio id="note-low" src="sfx/note-low.mp3"></audio>
+                <audio id="game-tie" src="sfx/game-tie.mp3"></audio>
+                <audio id="game-win" src="sfx/game-win.mp3"></audio>
+            </div>
+        </div>
+    </body>
 </html>

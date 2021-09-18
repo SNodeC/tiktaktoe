@@ -1,9 +1,10 @@
 /*
- * tiktaktoe - a game using SnodeC
- * Copyright (C) 2021 Volker Christian <me@vchrist.at>
+ * TikTakToe - a demo game using the snode.c framework
+ * Copyright (C) 2020, 2021 Volker Christian <me@vchrist.at>
+ * Copyright (C) 2021 Ertug Obalar, Jens Patzelt and Milad Tousi
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
+ * it under the terms of the GNU General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -43,7 +44,7 @@ int main(int argc, char* argv[]) {
         });
     });
 
-    legacyApp.get("/stylesheets", [] APPLICATION(req, res) {
+    legacyApp.get("/css", [] APPLICATION(req, res) {
         res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
@@ -52,6 +53,14 @@ int main(int argc, char* argv[]) {
     });
 
     legacyApp.get("/js", [] APPLICATION(req, res) {
+        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+            if (ret != 0) {
+                PLOG(ERROR) << req.url;
+            }
+        });
+    });
+
+    legacyApp.get("/sfx", [] APPLICATION(req, res) {
         res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
@@ -89,7 +98,7 @@ int main(int argc, char* argv[]) {
         });
     });
 
-    tlsApp.get("/stylesheets", [] APPLICATION(req, res) {
+    tlsApp.get("/css", [] APPLICATION(req, res) {
         res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
@@ -98,6 +107,14 @@ int main(int argc, char* argv[]) {
     });
 
     tlsApp.get("/js", [] APPLICATION(req, res) {
+        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+            if (ret != 0) {
+                PLOG(ERROR) << req.url;
+            }
+        });
+    });
+
+    tlsApp.get("/sfx", [] APPLICATION(req, res) {
         res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
             if (ret != 0) {
                 PLOG(ERROR) << req.url;
