@@ -28,7 +28,7 @@
 int main(int argc, char* argv[]) {
     net::SNodeC::init(argc, argv);
 
-    plugin();
+    TikTakToeSubProtocolFactory::load();
 
     express::legacy::WebApp legacyApp;
 

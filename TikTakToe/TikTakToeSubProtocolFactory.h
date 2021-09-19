@@ -25,16 +25,18 @@
 
 class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFactory {
 public:
-    TikTakToeSubProtocolFactory();
+    TikTakToeSubProtocolFactory() = default;
+
+    static void load();
 
 private:
     void destroy() override;
 
-    std::string name() override;
-
     web::websocket::server::SubProtocol* create() override;
 
     void destroy(web::websocket::server::SubProtocol* tikTakToeSubProtocol) override;
+
+    std::string name() override;
 };
 
 extern "C" {
