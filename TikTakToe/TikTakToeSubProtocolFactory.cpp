@@ -38,10 +38,6 @@ web::websocket::server::SubProtocol* TikTakToeSubProtocolFactory::create() {
     return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
 }
 
-void TikTakToeSubProtocolFactory::destroy(web::websocket::server::SubProtocol* tikTakToeSubProtocol) {
-    delete tikTakToeSubProtocol;
-}
-
 std::string TikTakToeSubProtocolFactory::name() {
     return NAME;
 }

@@ -34,8 +34,6 @@ private:
 
     web::websocket::server::SubProtocol* create() override;
 
-    void destroy(web::websocket::server::SubProtocol* tikTakToeSubProtocol) override;
-
     std::string name() override;
 };
 
