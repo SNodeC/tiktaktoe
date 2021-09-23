@@ -7,8 +7,13 @@ project(TikTakToe LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(SnodeC REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(logger REQUIRED)
+find_package(utils REQUIRED)
+find_package(net REQUIRED)
+find_package(web REQUIRED)
+find_package(express REQUIRED)
+find_package(websocket COMPONENTS server REQUIRED)
 
 find_program(iwyu_path NAMES include-what-you-use iwyu)
 if(NOT iwyu_path)
@@ -28,13 +33,11 @@ add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
 
 target_include_directories(
   tiktaktoe
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-          ${SNODEC_EXPRESS_INCLUDES} ${SNODEC_WEBSOCKET_INCLUDES}
-          ${OPENSSL_INCLUDE_DIR})
+  PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(
-  tiktaktoe PUBLIC ${SNODEC_EXPRESS_LIBRARIES} ${SNODEC_WEBSOCKET_LIBRARIES}
-                   ${OPENSSL_LIBRARIES})
+  tiktaktoe PUBLIC
+                   ${OPENSSL_LIBRARIES} utils::utils logger::logger net::net web::web express::express websocket::websocketbase websocket::server)
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
