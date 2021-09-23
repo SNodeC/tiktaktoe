@@ -13,7 +13,10 @@ find_package(utils REQUIRED)
 find_package(net REQUIRED)
 find_package(web REQUIRED)
 find_package(express REQUIRED)
-find_package(websocket COMPONENTS server REQUIRED)
+find_package(
+  websocket
+  COMPONENTS server
+  REQUIRED)
 
 find_program(iwyu_path NAMES include-what-you-use iwyu)
 if(NOT iwyu_path)
@@ -31,13 +34,18 @@ add_compile_options(-Wno-psabi)
 add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
                          TikTakToeSubProtocol.cpp TikTakToeGameModel.cpp)
 
-target_include_directories(
-  tiktaktoe
-  PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(
-  tiktaktoe PUBLIC
-                   ${OPENSSL_LIBRARIES} utils::utils logger::logger net::net web::web express::express websocket::websocketbase websocket::server)
+  tiktaktoe
+  PUBLIC ${OPENSSL_LIBRARIES}
+         utils::utils
+         logger::logger
+         net::net
+         web::web
+         express::express
+         websocket::websocketbase
+         websocket::server)
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
