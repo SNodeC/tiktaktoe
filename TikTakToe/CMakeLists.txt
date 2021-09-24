@@ -36,16 +36,7 @@ add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
 
 target_include_directories(tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(
-  tiktaktoe
-  PUBLIC ${OPENSSL_LIBRARIES}
-         utils::utils
-         logger::logger
-         net::net
-         web::web
-         express::express
-         websocket::websocketbase
-         websocket::server)
+target_link_libraries(tiktaktoe PUBLIC express::express websocket::server)
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
