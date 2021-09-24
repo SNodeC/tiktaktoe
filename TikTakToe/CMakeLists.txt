@@ -7,11 +7,6 @@ project(TikTakToe LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(OpenSSL REQUIRED)
-find_package(logger REQUIRED)
-find_package(utils REQUIRED)
-find_package(net REQUIRED)
-find_package(web REQUIRED)
 find_package(express REQUIRED)
 find_package(
   websocket
