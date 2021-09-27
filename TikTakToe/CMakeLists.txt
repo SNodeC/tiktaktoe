@@ -7,7 +7,10 @@ project(TikTakToe LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(snodec COMPONENTS logger utils net web websocketbase websocketserver)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+find_package(snodec COMPONENTS logger utils net web websocketbase
+                               websocketserver)
 find_package(express REQUIRED)
 
 find_program(iwyu_path NAMES include-what-you-use iwyu)
@@ -19,8 +22,6 @@ option(CHECK_INCLUDES "Check used headers")
 
 set(iwyu_path_and_options ${iwyu_path} -Xiwyu --verbose=1)
 
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
 add_compile_options(-Wno-psabi)
 
 add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
@@ -28,7 +29,8 @@ add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
 
 target_include_directories(tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(tiktaktoe PUBLIC snodec::utils snodec::websocketserver express::express)
+target_link_libraries(tiktaktoe PUBLIC snodec::utils snodec::websocketserver
+                                       express::express)
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
