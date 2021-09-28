@@ -9,9 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-find_package(snodec COMPONENTS logger utils net web websocketbase
+find_package(snodec COMPONENTS logger utils net web express websocketbase
                                websocketserver)
-find_package(express REQUIRED)
 
 find_program(iwyu_path NAMES include-what-you-use iwyu)
 if(NOT iwyu_path)
@@ -29,8 +28,8 @@ add_executable(tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
 
 target_include_directories(tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(tiktaktoe PUBLIC snodec::utils snodec::websocketserver
-                                       express::express)
+target_link_libraries(tiktaktoe PUBLIC snodec::websocketserver
+                                       snodec::express)
 
 install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
