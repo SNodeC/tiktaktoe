@@ -79,7 +79,7 @@ void TikTakToeSubProtocol::onMessageStart([[maybe_unused]] int opCode) {
     // VLOG(0) << "TikTakToe on Message Start - OpCode: " << opCode;
 }
 
-void TikTakToeSubProtocol::onMessageData(const char* junk, size_t junkLen) {
+void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) {
     data += std::string(junk, junkLen);
 }
 

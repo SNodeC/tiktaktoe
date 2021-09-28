@@ -22,6 +22,7 @@
 
 class TikTakToeGameModel;
 
+#include <cstddef>
 #include <net/timer/IntervalTimer.h>
 #include <web/websocket/server/SubProtocol.h>
 
@@ -33,7 +34,7 @@ public:
 
     void onConnected() override;
     void onMessageStart(int opCode) override;
-    void onMessageData(const char* junk, size_t junkLen) override;
+    void onMessageData(const char* junk, std::size_t junkLen) override;
     void onMessageEnd() override;
     void onMessageError(uint16_t errnum) override;
     void onPongReceived() override;
