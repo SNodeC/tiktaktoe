@@ -32,15 +32,7 @@ else()
   message(FATAL_ERROR "Could not find the program include-what-you-use")
 endif()
 
-find_package(
-  snodec
-  COMPONENTS logger
-             utils
-             net
-             web
-             express
-             websocketbase
-             websocketserver)
+find_package(snodec COMPONENTS express websocketserver)
 
 add_compile_options(-Wno-psabi)
 
