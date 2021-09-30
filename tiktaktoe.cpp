@@ -20,123 +20,128 @@
 #include "TikTakToeSubProtocolFactory.h"
 #include "config.h"
 
+#include <any> // for any
 #include <express/legacy/WebApp.h>
 #include <express/tls/WebApp.h>
 #include <log/Logger.h>
 #include <net/SNodeC.h>
+#include <string>                // for string, allocator, operator+
+#include <web/http/http_utils.h> // for ci_contains
 
-int main(int argc, char* argv[]) {
-    net::SNodeC::init(argc, argv);
+int main(int argc, char *argv[]) {
+  net::SNodeC::init(argc, argv);
 
-    TikTakToeSubProtocolFactory::load();
+  TikTakToeSubProtocolFactory::load();
 
-    express::legacy::WebApp legacyApp;
+  express::legacy::WebApp legacyApp;
 
-    legacyApp.get("/", [] APPLICATION(req, res) {
-        if (req.url == "/") {
-            req.url = "/index.html";
-        }
+  legacyApp.get("/", [] APPLICATION(req, res) {
+    if (req.url == "/") {
+      req.url = "/index.html";
+    }
 
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    legacyApp.get("/css", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
+  legacyApp.get("/css", [] APPLICATION(req, res) {
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    legacyApp.get("/js", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
+  legacyApp.get("/js", [] APPLICATION(req, res) {
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    legacyApp.get("/sfx", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
+  legacyApp.get("/sfx", [] APPLICATION(req, res) {
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    legacyApp.get("/ws", [] APPLICATION(req, res) {
-        if (httputils::ci_contains(req.header("connection"), "Upgrade")) {
-            res.upgrade(req);
-        } else {
-            res.sendStatus(404);
-        }
+  legacyApp.get("/ws", [] APPLICATION(req, res) {
+    if (httputils::ci_contains(req.header("connection"), "Upgrade")) {
+      res.upgrade(req);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+
+  legacyApp.listen(8080, [](int err) -> void {
+    if (err != 0) {
+      PLOG(ERROR) << "Listen";
+    } else {
+      VLOG(0) << "snode.c listening on port 8080";
+    }
+  });
+
+  express::tls::WebApp tlsApp({{"certChain", SERVERCERTF},
+                               {"keyPEM", SERVERKEYF},
+                               {"password", KEYFPASS}});
+
+  tlsApp.get("/", [] APPLICATION(req, res) {
+    if (req.url == "/") {
+      req.url = "/index.html";
+    }
+
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    legacyApp.listen(8080, [](int err) -> void {
-        if (err != 0) {
-            PLOG(ERROR) << "Listen";
-        } else {
-            VLOG(0) << "snode.c listening on port 8080";
-        }
+  tlsApp.get("/css", [] APPLICATION(req, res) {
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    express::tls::WebApp tlsApp({{"certChain", SERVERCERTF}, {"keyPEM", SERVERKEYF}, {"password", KEYFPASS}});
-
-    tlsApp.get("/", [] APPLICATION(req, res) {
-        if (req.url == "/") {
-            req.url = "/index.html";
-        }
-
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
+  tlsApp.get("/js", [] APPLICATION(req, res) {
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    tlsApp.get("/css", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
+  tlsApp.get("/sfx", [] APPLICATION(req, res) {
+    res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+      if (ret != 0) {
+        PLOG(ERROR) << req.url;
+      }
     });
+  });
 
-    tlsApp.get("/js", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
-    });
+  tlsApp.get("/ws", [] APPLICATION(req, res) {
+    if (httputils::ci_contains(req.header("connection"), "Upgrade")) {
+      res.upgrade(req);
+    } else {
+      res.sendStatus(404);
+    }
+  });
 
-    tlsApp.get("/sfx", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req.url;
-            }
-        });
-    });
+  tlsApp.listen(8088, [](int err) -> void {
+    if (err != 0) {
+      PLOG(ERROR) << "Listen";
+    } else {
+      VLOG(0) << "snode.c listening on port 8088";
+    }
+  });
 
-    tlsApp.get("/ws", [] APPLICATION(req, res) {
-        if (httputils::ci_contains(req.header("connection"), "Upgrade")) {
-            res.upgrade(req);
-        } else {
-            res.sendStatus(404);
-        }
-    });
-
-    tlsApp.listen(8088, [](int err) -> void {
-        if (err != 0) {
-            PLOG(ERROR) << "Listen";
-        } else {
-            VLOG(0) << "snode.c listening on port 8088";
-        }
-    });
-
-    return net::SNodeC::start();
+  return net::SNodeC::start();
 }

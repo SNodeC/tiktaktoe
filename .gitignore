@@ -1,10 +1,2 @@
-/build-TikTakToe-Desktop_GCC-Debug/
-/build-TikTakToe-Desktop_GCC-CheckIncludes/
-/build-TikTakToe-Desktop_GCC-Release/
-/build-TikTakToe-Desktop_CLANG-Debug/
-/build-TikTakToe-Desktop_CLANG-Release/
 /build/
-/build-TikTakToe-Desktop_CLANG-MinSizeRel/
-/build-TikTakToe-Desktop_CLANG-RelWithDebInfo/
-/build-TikTakToe-Desktop_GCC-MinSizeRel/
-/build-TikTakToe-Desktop_GCC-RelWithDebInfo/
+/CMakeLists.txt.user
