@@ -27,20 +27,23 @@
 #define NAME "tiktaktoe"
 
 void TikTakToeSubProtocolFactory::load() {
-  web::websocket::server::SocketContextUpgradeFactory::attach(
-      new TikTakToeSubProtocolFactory());
+    web::websocket::server::SocketContextUpgradeFactory::attach(new TikTakToeSubProtocolFactory());
 }
 
-void TikTakToeSubProtocolFactory::destroy() { delete this; }
-
-web::websocket::server::SubProtocol *TikTakToeSubProtocolFactory::create() {
-  return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
+void TikTakToeSubProtocolFactory::destroy() {
+    delete this;
 }
 
-std::string TikTakToeSubProtocolFactory::name() { return NAME; }
+web::websocket::server::SubProtocol* TikTakToeSubProtocolFactory::create() {
+    return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
+}
+
+std::string TikTakToeSubProtocolFactory::name() {
+    return NAME;
+}
 
 extern "C" {
-web::websocket::server::SubProtocolFactory *plugin() {
-  return new TikTakToeSubProtocolFactory();
-}
+    web::websocket::server::SubProtocolFactory* plugin() {
+        return new TikTakToeSubProtocolFactory();
+    }
 }
