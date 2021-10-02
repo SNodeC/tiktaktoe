@@ -25,136 +25,134 @@
 
 TikTakToeGameModel TikTakToeGameModel::gameModel;
 
-void TikTakToeGameModel::playersMove(const std::string& player, int cell) {
-    if (player == players[whosNext]) {
-        board[cell] = whosNext == 0 ? 1 : -1;
+void TikTakToeGameModel::playersMove(const std::string &player, int cell) {
+  if (player == players[whosNext]) {
+    board[cell] = whosNext == 0 ? 1 : -1;
 
-        switch (checkState(board)) {
-            case 1:
-                state = "update";
-                break;
+    switch (checkState(board)) {
+    case 1:
+      state = "update";
+      break;
 
-            case 2:
-                state = "tie";
-                score[1]++;
-                break;
+    case 2:
+      state = "tie";
+      score[1]++;
+      break;
 
-            case 3:
-                state = "win";
-                if (whosNext == 0)
-                    score[0]++;
-                else
-                    score[2]++;
-                winner = player;
-                break;
-        }
-
-        whosNext = whosNext == 0 ? 1 : 0;
+    case 3:
+      state = "win";
+      if (whosNext == 0)
+        score[0]++;
+      else
+        score[2]++;
+      winner = player;
+      break;
     }
+
+    whosNext = whosNext == 0 ? 1 : 0;
+  }
 }
 
 int TikTakToeGameModel::checkState(int board[]) {
-    int count = 0;
+  int count = 0;
 
-    // Horizontal Win Check
+  // Horizontal Win Check
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      count += board[i * 3 + j];
+    }
+
+    if (count == 3 || count == -3) {
+      for (int j = 0; j < 3; j++) {
+        board[i * 3 + j] *= 2;
+      }
+
+      return 3;
+    } else {
+      count = 0;
+    }
+  }
+
+  // Vertical Win Check
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      count += board[i + j * 3];
+    }
+
+    if (count == 3 || count == -3) {
+      for (int j = 0; j < 3; j++) {
+        board[i + j * 3] *= 2;
+      }
+
+      return 3;
+    } else {
+      count = 0;
+    }
+  }
+
+  //  Left Diagonal Win Check
+  {
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            count += board[i * 3 + j];
-        }
-
-        if (count == 3 || count == -3) {
-            for (int j = 0; j < 3; j++) {
-                board[i * 3 + j] *= 2;
-            }
-
-            return 3;
-        } else {
-            count = 0;
-        }
+      count += board[i * 4];
     }
 
-    // Vertical Win Check
+    if (count == 3 || count == -3) {
+      for (int i = 0; i < 3; i++) {
+        board[i * 4] *= 2;
+      }
+
+      return 3;
+    } else {
+      count = 0;
+    }
+  }
+
+  // Right Diagonal Win Check
+  {
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            count += board[i + j * 3];
-        }
-
-        if (count == 3 || count == -3) {
-            for (int j = 0; j < 3; j++) {
-                board[i + j * 3] *= 2;
-            }
-
-            return 3;
-        } else {
-            count = 0;
-        }
+      count += board[i * 2 + 2];
     }
 
-    //  Left Diagonal Win Check
-    {
-        for (int i = 0; i < 3; i++) {
-            count += board[i * 4];
-        }
+    if (count == 3 || count == -3) {
+      for (int i = 0; i < 3; i++) {
+        board[i * 2 + 2] *= 2;
+      }
 
-        if (count == 3 || count == -3) {
-            for (int i = 0; i < 3; i++) {
-                board[i * 4] *= 2;
-            }
-
-            return 3;
-        } else {
-            count = 0;
-        }
+      return 3;
+    } else {
+      count = 0;
     }
+  }
 
-    // Right Diagonal Win Check
-    {
-        for (int i = 0; i < 3; i++) {
-            count += board[i * 2 + 2];
-        }
+  // Ongoing Check
+  for (int i = 0; i < 9; i++) {
+    if (board[i] == 0)
+      return 1;
+  }
 
-        if (count == 3 || count == -3) {
-            for (int i = 0; i < 3; i++) {
-                board[i * 2 + 2] *= 2;
-            }
-
-            return 3;
-        } else {
-            count = 0;
-        }
-    }
-
-    // Ongoing Check
-    for (int i = 0; i < 9; i++) {
-        if (board[i] == 0)
-            return 1;
-    }
-
-    // Return Tie
-    return 2;
+  // Return Tie
+  return 2;
 }
 
 void TikTakToeGameModel::resetBoard() {
-    for (int i = 0; i < 9; i++) {
-        board[i] = 0;
-    }
+  for (int i = 0; i < 9; i++) {
+    board[i] = 0;
+  }
 
-    state = "reset";
-    winner = "";
+  state = "reset";
+  winner = "";
 }
 
 nlohmann::json TikTakToeGameModel::updateClientState() {
-    nlohmann::json message;
+  nlohmann::json message;
 
-    message["board"] = board;
-    message["score"] = score;
-    message["state"] = state;
-    message["winner"] = winner;
-    message["leader"] = players[whosNext];
+  message["board"] = board;
+  message["score"] = score;
+  message["state"] = state;
+  message["winner"] = winner;
+  message["leader"] = players[whosNext];
 
-    return message;
+  return message;
 }
 
-TikTakToeGameModel& TikTakToeGameModel::getGameModel() {
-    return gameModel;
-}
+TikTakToeGameModel &TikTakToeGameModel::getGameModel() { return gameModel; }

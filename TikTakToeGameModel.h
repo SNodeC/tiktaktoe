@@ -25,30 +25,30 @@
 
 class TikTakToeGameModel {
 protected:
-    TikTakToeGameModel() = default;
+  TikTakToeGameModel() = default;
 
 public:
-    void playersMove(const std::string& player, int cell);
-    void resetBoard();
-    int checkState(int board[]);
+  void playersMove(const std::string &player, int cell);
+  void resetBoard();
+  int checkState(int board[]);
 
-    nlohmann::json updateClientState();
+  nlohmann::json updateClientState();
 
-    static TikTakToeGameModel& getGameModel();
+  static TikTakToeGameModel &getGameModel();
 
 protected:
-    std::string players[2] = {"player_1", "player_2"};
-    std::string winner = "";
-    std::string state = "setup";
+  std::string players[2] = {"player_1", "player_2"};
+  std::string winner = "";
+  std::string state = "setup";
 
-    int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int score[3] = {0, 0, 0};
-    int whosNext = 0;
-    int numPlayers = 0;
+  int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  int score[3] = {0, 0, 0};
+  int whosNext = 0;
+  int numPlayers = 0;
 
-    friend class TikTakToeSubProtocol;
+  friend class TikTakToeSubProtocol;
 
-    static TikTakToeGameModel gameModel;
+  static TikTakToeGameModel gameModel;
 };
 
 #endif
