@@ -23,8 +23,13 @@
 class TikTakToeGameModel;
 
 #include <cstddef>
-#include <net/timer/IntervalTimer.h>
+#include <stdint.h> // for uint16_t
+#include <string>   // for string
 #include <web/websocket/server/SubProtocol.h>
+
+namespace net::timer {
+    class Timer;
+}
 
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:

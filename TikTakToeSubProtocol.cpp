@@ -22,10 +22,14 @@
 #include "TikTakToeGameModel.h"
 #include "config.h"
 
+#include <functional>       // for function
+#include <initializer_list> // for initializer_list
 #include <log/Logger.h>
+#include <map>                       // for operator==
+#include <net/timer/IntervalTimer.h> // for Timer, IntervalTimer
 #include <nlohmann/json.hpp>
-#include <web/http/server/Request.h>
-#include <web/http/server/Response.h>
+#include <nlohmann/json_fwd.hpp> // for json
+#include <vector>                // for vector
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::websocket::server::SubProtocol(name)

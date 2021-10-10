@@ -20,7 +20,6 @@
 #include "TikTakToeSubProtocolFactory.h"
 #include "config.h"
 
-#include <any> // for any
 #include <express/legacy/WebApp.h>
 #include <express/tls/WebApp.h>
 #include <log/Logger.h>

@@ -19,7 +19,6 @@
 
 #include "TikTakToeGameModel.h"
 
-#include <log/Logger.h>
 #include <map>               // for operator==
 #include <nlohmann/json.hpp> // for basic_json<>::object_t, basic_json<>::v...
 
