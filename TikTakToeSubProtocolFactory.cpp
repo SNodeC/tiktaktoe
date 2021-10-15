@@ -26,10 +26,6 @@
 
 #define NAME "tiktaktoe"
 
-void TikTakToeSubProtocolFactory::load() {
-    web::websocket::server::SocketContextUpgradeFactory::attach(new TikTakToeSubProtocolFactory());
-}
-
 void TikTakToeSubProtocolFactory::destroy() {
     delete this;
 }

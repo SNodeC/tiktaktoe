@@ -19,6 +19,8 @@
 
 #include "TikTakToeSubProtocolFactory.h"
 #include "config.h"
+#include "web/websocket/server/SocketContextUpgradeFactory.h"
+#include "web/websocket/server/SubProtocolFactorySelector.h"
 
 #include <express/legacy/WebApp.h>
 #include <express/tls/WebApp.h>
@@ -28,9 +30,9 @@
 #include <web/http/http_utils.h> // for ci_contains
 
 int main(int argc, char* argv[]) {
-    net::SNodeC::init(argc, argv);
+    web::websocket::server::linkStatic("tiktaktoe", plugin);
 
-    TikTakToeSubProtocolFactory::load();
+    net::SNodeC::init(argc, argv);
 
     express::legacy::WebApp legacyApp;
 

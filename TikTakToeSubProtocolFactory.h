@@ -28,8 +28,6 @@ class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFa
 public:
     TikTakToeSubProtocolFactory() = default;
 
-    static void load();
-
 private:
     void destroy() override;
 
