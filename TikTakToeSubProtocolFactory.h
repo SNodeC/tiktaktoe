@@ -37,7 +37,7 @@ private:
 };
 
 extern "C" {
-    web::websocket::server::SubProtocolFactory* plugin();
+    web::websocket::server::SubProtocolFactory* getSubProtocolFactory();
 }
 
 #endif

@@ -39,7 +39,7 @@ std::string TikTakToeSubProtocolFactory::name() {
 }
 
 extern "C" {
-    web::websocket::server::SubProtocolFactory* plugin() {
+    web::websocket::server::SubProtocolFactory* getSubProtocolFactory() {
         return new TikTakToeSubProtocolFactory();
     }
 }
