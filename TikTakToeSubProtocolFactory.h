@@ -36,12 +36,6 @@ private:
     std::string name() override;
 };
 
-#ifdef LINK_STATIC
-web::websocket::server::SubProtocolFactory* tikTakToe();
-#endif
-
-#ifndef LINK_STATIC
-extern "C" web::websocket::server::SubProtocolFactory* getSubProtocolFactory();
-#endif
+extern "C" web::websocket::server::SubProtocolFactory* tiktaktoeServerSubProtocolFactory();
 
 #endif

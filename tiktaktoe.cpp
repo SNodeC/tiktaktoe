@@ -34,7 +34,7 @@
 
 int main(int argc, char* argv[]) {
 #ifdef LINK_STATIC
-    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tikTakToe);
+    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
 #endif
 
     net::SNodeC::init(argc, argv);
