@@ -40,10 +40,8 @@ private:
 web::websocket::server::SubProtocolFactory* tikTakToe();
 #endif
 
-extern "C" {
 #ifndef LINK_STATIC
-    web::websocket::server::SubProtocolFactory* getSubProtocolFactory();
+extern "C" web::websocket::server::SubProtocolFactory* getSubProtocolFactory();
 #endif
-}
 
 #endif

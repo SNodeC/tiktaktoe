@@ -23,9 +23,9 @@
 class TikTakToeGameModel;
 
 #include <cstddef>
-#include <stdint.h> // for uint16_t
-#include <string>   // for string
-#include <web/websocket/server/SubProtocol.h>
+#include <stdint.h>                           // for uint16_t
+#include <string>                             // for string
+#include <web/websocket/server/SubProtocol.h> // IWYU pragma: export
 
 namespace net::timer {
     class Timer;
