@@ -38,8 +38,16 @@ std::string TikTakToeSubProtocolFactory::name() {
     return NAME;
 }
 
+#ifdef LINK_STATIC
+web::websocket::server::SubProtocolFactory* tikTakToe() {
+    return new TikTakToeSubProtocolFactory();
+}
+#endif
+
 extern "C" {
+#ifndef LINK_STATIC
     web::websocket::server::SubProtocolFactory* getSubProtocolFactory() {
         return new TikTakToeSubProtocolFactory();
     }
+#endif
 }
