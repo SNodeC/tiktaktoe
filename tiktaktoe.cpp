@@ -30,7 +30,7 @@
 #include <web/http/http_utils.h> // for ci_contains
 
 int main(int argc, char* argv[]) {
-    web::websocket::server::linkStatic("tiktaktoe", getSubProtocolFactory);
+    web::websocket::server::linkSubProtocol("tiktaktoe", getSubProtocolFactory);
 
     net::SNodeC::init(argc, argv);
 
