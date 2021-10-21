@@ -22,8 +22,6 @@
 #include "TikTakToeGameModel.h"
 #include "TikTakToeSubProtocol.h"
 
-#include <web/websocket/server/SocketContextUpgradeFactory.h>
-
 #define NAME "tiktaktoe"
 
 void TikTakToeSubProtocolFactory::destroy() {

@@ -19,7 +19,6 @@
 
 #ifdef LINK_STATIC
 #include "TikTakToeSubProtocolFactory.h"
-#include "web/websocket/server/SocketContextUpgradeFactory.h"
 #endif
 
 #include "config.h"
