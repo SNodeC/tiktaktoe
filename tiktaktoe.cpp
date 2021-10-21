@@ -19,6 +19,8 @@
 
 #ifdef LINK_STATIC
 #include "TikTakToeSubProtocolFactory.h"
+
+#include <web/websocket/server/SubProtocolFactorySelector.h>
 #endif
 
 #include "config.h"
@@ -32,7 +34,7 @@
 
 int main(int argc, char* argv[]) {
 #ifdef LINK_STATIC
-    web::websocket::server::linkSubProtocol("tiktaktoe", tikTakToe);
+    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tikTakToe);
 #endif
 
     net::SNodeC::init(argc, argv);
