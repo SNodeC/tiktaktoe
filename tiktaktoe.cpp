@@ -17,10 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef LINK_STATIC
 #include "TikTakToeSubProtocolFactory.h"
-#include "config.h"
 #include "web/websocket/server/SocketContextUpgradeFactory.h"
-#include "web/websocket/server/SubProtocolFactorySelector.h"
+#endif
+
+#include "config.h"
 
 #include <express/legacy/WebApp.h>
 #include <express/tls/WebApp.h>
