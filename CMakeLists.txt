@@ -67,8 +67,6 @@ if(snodec_FOUND)
             LIBRARY DESTINATION ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
     )
 
-    link_directories(${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH})
-
     # ##########################################################################
     #
     # Inline linked target
@@ -83,7 +81,6 @@ if(snodec_FOUND)
 
     target_include_directories(
         tiktaktoe-inline PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                 ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
     )
 
     target_link_libraries(
@@ -106,7 +103,6 @@ if(snodec_FOUND)
 
     target_include_directories(
         tiktaktoe-dynamic PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                  ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
     )
 
     target_link_libraries(
@@ -132,7 +128,6 @@ if(snodec_FOUND)
 
     target_include_directories(
         tiktaktoe-half PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                               ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
     )
 
     target_link_libraries(
