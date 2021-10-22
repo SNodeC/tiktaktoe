@@ -20,6 +20,7 @@
 #ifdef LINK_SUBPROTOCOL_STATIC
 #include "TikTakToeSubProtocolFactory.h"
 
+#include <web/websocket/server/SocketContextUpgradeFactory.h>
 #include <web/websocket/server/SubProtocolFactorySelector.h>
 #endif
 
@@ -40,6 +41,7 @@
 int main(int argc, char* argv[]) {
 #ifdef LINK_SUBPROTOCOL_STATIC
     web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
+    web::websocket::server::SocketContextUpgradeFactory::link();
 #endif
 #ifdef LINK_WEBSOCKET_STATIC
     web::websocket::server::SocketContextUpgradeFactory::link();
