@@ -17,12 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef LINK_STATIC
+#ifdef LINK_SUBPROTOCOL_STATIC
 #include "TikTakToeSubProtocolFactory.h"
 
 #include <web/websocket/server/SubProtocolFactorySelector.h>
 #endif
 
+#ifdef LINK_WEBSOCKET_STATIC
+#include <web/websocket/server/SocketContextUpgradeFactory.h>
+#endif
 #include "config.h"
 
 #include <express/legacy/WebApp.h>
@@ -31,10 +34,14 @@
 #include <net/SNodeC.h>
 #include <string>                // for string, allocator, operator+
 #include <web/http/http_utils.h> // for ci_contains
+#include <web/websocket/server/SocketContextUpgradeFactory.h>
 
 int main(int argc, char* argv[]) {
-#ifdef LINK_STATIC
+#ifdef LINK_SUBPROTOCOL_STATIC
     web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
+#endif
+#ifdef LINK_WEBSOCKET_STATIC
+    web::websocket::server::linkWebsocketServer();
 #endif
 
     net::SNodeC::init(argc, argv);

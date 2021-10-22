@@ -33,71 +33,103 @@ if(snodec_FOUND)
             set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path_and_options})
         endif(CHECK_INCLUDES)
     else()
-        message(FATAL_ERROR "Could not find the program include-what-you-use")
+        message(
+            AUTHOR_WARNING "Could not find the program include-what-you-use"
+        )
     endif()
 
     add_compile_options(-Wno-psabi)
 
-    option(
-        STATIC_LINKING
-        "Link subprotocoll plugin to executable instead of using it as a dlopened plugin"
-        ON
+    set(TIKTAKTOE_SUBPROTOCOL_SOURCES
+        TikTakToeSubProtocolFactory.cpp TikTakToeSubProtocol.cpp
+        TikTakToeGameModel.cpp
     )
 
-    if(STATIC_LINKING)
-        add_executable(
-            tiktaktoe tiktaktoe.cpp TikTakToeSubProtocolFactory.cpp
-                      TikTakToeSubProtocol.cpp TikTakToeGameModel.cpp
-        )
+    # ##########################################################################
+    #
+    # Static linked target
+    #
+    # ##########################################################################
 
-        get_target_property(
-            INCLUDES snodec::websocketserver INTERFACE_INCLUDE_DIRECTORIES
-        )
+    add_executable(
+        tiktaktoe-static tiktaktoe.cpp ${TIKTAKTOE_SUBPROTOCOL_SOURCES}
+    )
 
-        target_include_directories(
-            tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-        )
+    target_compile_definitions(tiktaktoe-static PRIVATE LINK_SUBPROTOCOL_STATIC)
 
-        target_link_libraries(
-            tiktaktoe PUBLIC snodec::express snodec::websocketserver
-        )
+    target_include_directories(
+        tiktaktoe-static PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                                 ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
 
-        target_compile_definitions(tiktaktoe PRIVATE LINK_STATIC)
-    else(STATIC_LINKING)
-        add_executable(tiktaktoe tiktaktoe.cpp)
+    target_link_libraries(
+        tiktaktoe-static PUBLIC snodec::express snodec::websocketserver
+    )
 
-        get_target_property(
-            INCLUDES snodec::websocketserver INTERFACE_INCLUDE_DIRECTORIES
-        )
+    install(TARGETS tiktaktoe-static RUNTIME DESTINATION bin)
 
-        target_include_directories(
-            tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-        )
+    # ##########################################################################
+    #
+    # Half-static linked target
+    #
+    # ##########################################################################
 
-        target_link_libraries(tiktaktoe PUBLIC snodec::express)
+    add_executable(tiktaktoe-half-static tiktaktoe.cpp)
 
-        add_library(
-            tiktaktoeplugin SHARED
-            TikTakToeSubProtocolFactory.cpp TikTakToeSubProtocol.cpp
-            TikTakToeGameModel.cpp
-        )
+    target_compile_definitions(
+        tiktaktoe-half-static PRIVATE LINK_WEBSOCKET_STATIC
+    )
 
-        set_target_properties(
-            tiktaktoeplugin PROPERTIES OUTPUT_NAME "snodec-websocket-tiktaktoe"
-                                       SOVERSION 1 # PREFIX "ssp"
-        )
+    target_include_directories(
+        tiktaktoe-half-static PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                                      ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
 
-        target_include_directories(
-            tiktaktoeplugin PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                    ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
-        )
+    target_link_libraries(
+        tiktaktoe-half-static PUBLIC snodec::express snodec::websocketserver
+    )
 
-        install(TARGETS tiktaktoeplugin
-                LIBRARY DESTINATION ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
-        )
-    endif(STATIC_LINKING)
+    install(TARGETS tiktaktoe-half-static RUNTIME DESTINATION bin)
 
-    install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
+    # ##########################################################################
+    #
+    # Dynamic linked target
+    #
+    # ##########################################################################
+
+    add_executable(tiktaktoe-dynamic tiktaktoe.cpp)
+
+    target_compile_definitions(tiktaktoe-dynamic PRIVATE)
+
+    target_include_directories(
+        tiktaktoe-dynamic PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    target_link_libraries(tiktaktoe-dynamic PUBLIC snodec::express)
+
+    install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
+
+    # ##########################################################################
+    #
+    # Subprotocol as plugin
+    #
+    # ##########################################################################
+
+    add_library(tiktaktoeplugin SHARED ${TIKTAKTOE_SUBPROTOCOL_SOURCES})
+
+    set_target_properties(
+        tiktaktoeplugin PROPERTIES OUTPUT_NAME "snodec-websocket-tiktaktoe"
+                                   SOVERSION 1 # PREFIX "ssp"
+    )
+
+    target_include_directories(
+        tiktaktoeplugin PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                                ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
+
+    install(TARGETS tiktaktoeplugin
+            LIBRARY DESTINATION ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
+    )
 
     add_custom_target(format DEPENDS format-cmds)
     add_custom_command(
