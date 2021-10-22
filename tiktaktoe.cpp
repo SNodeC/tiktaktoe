@@ -26,6 +26,7 @@
 #ifdef LINK_WEBSOCKET_STATIC
 #include <web/websocket/server/SocketContextUpgradeFactory.h>
 #endif
+
 #include "config.h"
 
 #include <express/legacy/WebApp.h>
@@ -41,7 +42,7 @@ int main(int argc, char* argv[]) {
     web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
 #endif
 #ifdef LINK_WEBSOCKET_STATIC
-    web::websocket::server::linkWebsocketServer();
+    web::websocket::server::SocketContextUpgradeFactory::link();
 #endif
 
     net::SNodeC::init(argc, argv);
