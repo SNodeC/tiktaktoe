@@ -47,71 +47,7 @@ if(snodec_FOUND)
 
     # ##########################################################################
     #
-    # Static linked target
-    #
-    # ##########################################################################
-
-    add_executable(
-        tiktaktoe-static tiktaktoe.cpp ${TIKTAKTOE_SUBPROTOCOL_SOURCES}
-    )
-
-    target_compile_definitions(tiktaktoe-static PRIVATE LINK_SUBPROTOCOL_STATIC)
-
-    target_include_directories(
-        tiktaktoe-static PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                 ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
-    )
-
-    target_link_libraries(
-        tiktaktoe-static PUBLIC snodec::express snodec::websocketserver
-    )
-
-    install(TARGETS tiktaktoe-static RUNTIME DESTINATION bin)
-
-    # ##########################################################################
-    #
-    # Half-static linked target
-    #
-    # ##########################################################################
-
-    add_executable(tiktaktoe-half-static tiktaktoe.cpp)
-
-    target_compile_definitions(
-        tiktaktoe-half-static PRIVATE LINK_WEBSOCKET_STATIC
-    )
-
-    target_include_directories(
-        tiktaktoe-half-static PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                      ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
-    )
-
-    target_link_libraries(
-        tiktaktoe-half-static PUBLIC snodec::express snodec::websocketserver
-    )
-
-    install(TARGETS tiktaktoe-half-static RUNTIME DESTINATION bin)
-
-    # ##########################################################################
-    #
-    # Dynamic linked target
-    #
-    # ##########################################################################
-
-    add_executable(tiktaktoe-dynamic tiktaktoe.cpp)
-
-    target_compile_definitions(tiktaktoe-dynamic PRIVATE)
-
-    target_include_directories(
-        tiktaktoe-dynamic PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-    )
-
-    target_link_libraries(tiktaktoe-dynamic PUBLIC snodec::express)
-
-    install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
-
-    # ##########################################################################
-    #
-    # Subprotocol as plugin
+    # Subprotocol as library
     #
     # ##########################################################################
 
@@ -130,6 +66,96 @@ if(snodec_FOUND)
     install(TARGETS tiktaktoeplugin
             LIBRARY DESTINATION ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
     )
+
+    link_directories(${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH})
+
+    # ##########################################################################
+    #
+    # Inline linked target
+    #
+    # ##########################################################################
+
+    add_executable(
+        tiktaktoe-inline tiktaktoe.cpp ${TIKTAKTOE_SUBPROTOCOL_SOURCES}
+    )
+
+    target_compile_definitions(tiktaktoe-inline PRIVATE LINK_SUBPROTOCOL_STATIC)
+
+    target_include_directories(
+        tiktaktoe-inline PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                                 ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
+
+    target_link_libraries(
+        tiktaktoe-inline PUBLIC snodec::express snodec::websocketserver
+    )
+
+    install(TARGETS tiktaktoe-inline RUNTIME DESTINATION bin)
+
+    # ##########################################################################
+    #
+    # Full dynamically linked target
+    #
+    # ##########################################################################
+
+    add_executable(tiktaktoe-dynamic tiktaktoe.cpp)
+
+    target_compile_definitions(
+        tiktaktoe-dynamic PRIVATE LINK_SUBPROTOCOL_STATIC
+    )
+
+    target_include_directories(
+        tiktaktoe-dynamic PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                                  ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
+
+    target_link_libraries(
+        tiktaktoe-dynamic PUBLIC snodec::express snodec::websocketserver
+                                 tiktaktoeplugin
+    )
+
+    target_link_directories(
+        tiktaktoe-dynamic PRIVATE ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
+    )
+
+    install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
+
+    # ##########################################################################
+    #
+    # Half dynamically linked target - tiktaktoe library must be dlopened
+    #
+    # ##########################################################################
+
+    add_executable(tiktaktoe-half tiktaktoe.cpp)
+
+    target_compile_definitions(tiktaktoe-half PRIVATE LINK_WEBSOCKET_STATIC)
+
+    target_include_directories(
+        tiktaktoe-half PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                               ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
+
+    target_link_libraries(
+        tiktaktoe-half PUBLIC snodec::express snodec::websocketserver
+    )
+
+    install(TARGETS tiktaktoe-half RUNTIME DESTINATION bin)
+
+    # ##########################################################################
+    #
+    # Non linked target - websocket and tiktaktoe libraries must be dlopened
+    #
+    # ##########################################################################
+
+    add_executable(tiktaktoe tiktaktoe.cpp)
+
+    target_compile_definitions(tiktaktoe PRIVATE)
+
+    target_include_directories(tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+    target_link_libraries(tiktaktoe PUBLIC snodec::express)
+
+    install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
 
     add_custom_target(format DEPENDS format-cmds)
     add_custom_command(
