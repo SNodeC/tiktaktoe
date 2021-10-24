@@ -42,7 +42,7 @@ if(snodec_FOUND)
         -Werror
         -Wall
         -Wextra
-        # -Wno-psabi
+        -Wno-psabi  # needed for RaspberryPi
         -Wconversion
         -Wpedantic
         -pedantic-errors
