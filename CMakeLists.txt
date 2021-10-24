@@ -38,7 +38,19 @@ if(snodec_FOUND)
         )
     endif()
 
-    add_compile_options(-Wno-psabi)
+    add_compile_options(
+        -Werror
+        -Wall
+        -Wextra
+        # -Wno-psabi
+        -Wconversion
+        -Wpedantic
+        -pedantic-errors
+        -fexec-charset=UTF-8
+        # -fsanitize=address -fno-omit-frame-pointer
+    )
+    # set_property(GLOBAL PROPERTY LINK_FLAGS -fsanitize=address)
+    # link_libraries(asan)
 
     set(TIKTAKTOE_SUBPROTOCOL_SOURCES
         TikTakToeSubProtocolFactory.cpp TikTakToeSubProtocol.cpp
