@@ -21,12 +21,12 @@
 
 #include "TikTakToeGameModel.h"
 #include "config.h"
+#include "net/timer/IntervalTimer.h" // for Timer, IntervalTimer
 
 #include <functional>       // for function
 #include <initializer_list> // for initializer_list
 #include <log/Logger.h>
-#include <map>                       // for operator==
-#include <net/timer/IntervalTimer.h> // for Timer, IntervalTimer
+#include <map> // for operator==
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp> // for json
 #include <vector>                // for vector

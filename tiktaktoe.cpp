@@ -19,31 +19,28 @@
 
 #ifdef LINK_SUBPROTOCOL_STATIC
 #include "TikTakToeSubProtocolFactory.h"
-
-#include <web/websocket/server/SocketContextUpgradeFactory.h>
-#include <web/websocket/server/SubProtocolFactorySelector.h>
+#include "web/websocket/server/SubProtocolFactorySelector.h"
 #endif
 
-#ifdef LINK_WEBSOCKET_STATIC
-#include <web/websocket/server/SocketContextUpgradeFactory.h>
+#if defined(LINK_WEBSOCKET_STATIC) || defined(LINK_SUBPROTOCOL_STATIC)
+#include "web/websocket/server/SocketContextUpgradeFactory.h"
 #endif
 
 #include "config.h"
+#include "express/legacy/WebApp.h"
+#include "express/tls/WebApp.h"
+#include "net/SNodeC.h"
+#include "web/http/http_utils.h" // for ci_contains
 
-#include <express/legacy/WebApp.h>
-#include <express/tls/WebApp.h>
 #include <log/Logger.h>
-#include <net/SNodeC.h>
-#include <string>                // for string, allocator, operator+
-#include <web/http/http_utils.h> // for ci_contains
-#include <web/websocket/server/SocketContextUpgradeFactory.h>
+#include <string> // for string, allocator, operator+
 
 int main(int argc, char* argv[]) {
 #ifdef LINK_SUBPROTOCOL_STATIC
     web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
-    web::websocket::server::SocketContextUpgradeFactory::link();
 #endif
-#ifdef LINK_WEBSOCKET_STATIC
+
+#if defined(LINK_WEBSOCKET_STATIC) || defined(LINK_SUBPROTOCOL_STATIC)
     web::websocket::server::SocketContextUpgradeFactory::link();
 #endif
 
