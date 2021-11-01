@@ -133,7 +133,7 @@ if(snodec_FOUND)
     )
 
     target_link_directories(
-        tiktaktoe-dynamic PRIVATE ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
+        tiktaktoe-dynamic PRIVATE ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}
     )
 
     install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
