@@ -72,12 +72,14 @@ if(snodec_FOUND)
 
     target_include_directories(
         tiktaktoeplugin PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                ${SNODEC_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+                                ${WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
     )
 
     install(TARGETS tiktaktoeplugin
-            LIBRARY DESTINATION ${SNODEC_SUBPROTOCOL_SERVER_INSTALL_PATH}
+            LIBRARY DESTINATION ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}
     )
+
+message("#######: " ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR})
 
     # ##########################################################################
     #
