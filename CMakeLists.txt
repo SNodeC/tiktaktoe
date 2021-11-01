@@ -4,6 +4,16 @@ project(TikTakToe LANGUAGES CXX)
 
 find_package(snodec COMPONENTS express websocketserver)
 
+get_target_property(
+    WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR snodec::websocketserver
+    WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR
+)
+
+get_target_property(
+    WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS snodec::websocketserver
+    WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS
+)
+
 if(snodec_FOUND)
     configure_file(config.h.in config.h @ONLY)
 
@@ -78,8 +88,6 @@ if(snodec_FOUND)
     install(TARGETS tiktaktoeplugin
             LIBRARY DESTINATION ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}
     )
-
-message("#######: " ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR})
 
     # ##########################################################################
     #
@@ -160,7 +168,10 @@ message("#######: " ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR})
 
     target_compile_definitions(tiktaktoe PRIVATE)
 
-    target_include_directories(tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    target_include_directories(
+        tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+                          ${WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
+    )
 
     target_link_libraries(tiktaktoe PUBLIC snodec::express)
 
