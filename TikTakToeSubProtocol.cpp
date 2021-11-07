@@ -31,9 +31,8 @@
 #include <nlohmann/json_fwd.hpp> // for json
 #include <vector>                // for vector
 
-TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
-    : web::websocket::server::SubProtocol(name)
-    , gameModel(gameModel)
+TikTakToeSubProtocol::TikTakToeSubProtocol(TikTakToeGameModel& gameModel)
+    : gameModel(gameModel)
     , timer(net::timer::Timer::intervalTimer(
           [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
               this->sendPing();

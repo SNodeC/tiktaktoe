@@ -24,18 +24,10 @@
 
 #define NAME "tiktaktoe"
 
-void TikTakToeSubProtocolFactory::destroy() {
-    delete this;
-}
-
 web::websocket::server::SubProtocol* TikTakToeSubProtocolFactory::create() {
-    return new TikTakToeSubProtocol(NAME, TikTakToeGameModel::getGameModel());
-}
-
-std::string TikTakToeSubProtocolFactory::name() {
-    return NAME;
+    return new TikTakToeSubProtocol(TikTakToeGameModel::getGameModel());
 }
 
 extern "C" web::websocket::server::SubProtocolFactory* tiktaktoeServerSubProtocolFactory() {
-    return new TikTakToeSubProtocolFactory();
+    return new TikTakToeSubProtocolFactory(NAME);
 }

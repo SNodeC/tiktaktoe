@@ -34,7 +34,7 @@ namespace net::timer {
 
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:
-    TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& game);
+    TikTakToeSubProtocol(TikTakToeGameModel& game);
 
     ~TikTakToeSubProtocol() override;
 
