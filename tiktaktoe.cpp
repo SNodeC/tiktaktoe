@@ -29,7 +29,7 @@
 #include "config.h"
 #include "express/legacy/WebApp.h"
 #include "express/tls/WebApp.h"
-#include "net/SNodeC.h"
+#include "core/SNodeC.h"
 #include "web/http/http_utils.h" // for ci_contains
 
 #include <log/Logger.h>
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     web::websocket::server::SocketContextUpgradeFactory::link();
 #endif
 
-    net::SNodeC::init(argc, argv);
+    core::SNodeC::init(argc, argv);
 
     express::legacy::WebApp legacyApp;
 
@@ -154,5 +154,5 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    return net::SNodeC::start();
+    return core::SNodeC::start();
 }

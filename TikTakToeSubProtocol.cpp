@@ -21,7 +21,7 @@
 
 #include "TikTakToeGameModel.h"
 #include "config.h"
-#include "net/timer/IntervalTimer.h" // for Timer, IntervalTimer
+#include "core/timer/IntervalTimer.h" // for Timer, IntervalTimer
 
 #include <functional>       // for function
 #include <initializer_list> // for initializer_list
@@ -33,7 +33,7 @@
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(TikTakToeGameModel& gameModel)
     : gameModel(gameModel)
-    , timer(net::timer::Timer::intervalTimer(
+    , timer(core::timer::Timer::intervalTimer(
           [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
               this->sendPing();
               this->flyingPings++;

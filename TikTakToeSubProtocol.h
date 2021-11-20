@@ -28,7 +28,7 @@ class TikTakToeGameModel;
 #include <stdint.h> // for uint16_t
 #include <string>   // for string
 
-namespace net::timer {
+namespace core::timer {
     class Timer;
 }
 
@@ -55,7 +55,7 @@ private:
 
     TikTakToeGameModel& gameModel;
 
-    net::timer::Timer& timer;
+    core::timer::Timer& timer;
 };
 
 #endif
