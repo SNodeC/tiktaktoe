@@ -27,13 +27,12 @@
 #endif
 
 #include "config.h"
+#include "core/SNodeC.h"
 #include "express/legacy/WebApp.h"
 #include "express/tls/WebApp.h"
-#include "core/SNodeC.h"
 #include "web/http/http_utils.h" // for ci_contains
 
 #include <log/Logger.h>
-#include <string> // for string, allocator, operator+
 
 int main(int argc, char* argv[]) {
 #ifdef LINK_SUBPROTOCOL_STATIC

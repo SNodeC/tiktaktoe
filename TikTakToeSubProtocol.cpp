@@ -31,8 +31,9 @@
 #include <nlohmann/json_fwd.hpp> // for json
 #include <vector>                // for vector
 
-TikTakToeSubProtocol::TikTakToeSubProtocol(TikTakToeGameModel& gameModel)
-    : gameModel(gameModel)
+TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
+    : web::websocket::server::SubProtocol(name)
+    , gameModel(gameModel)
     , timer(core::timer::Timer::intervalTimer(
           [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
               this->sendPing();
@@ -50,12 +51,7 @@ TikTakToeSubProtocol::~TikTakToeSubProtocol() {
 }
 
 void TikTakToeSubProtocol::onConnected() {
-    // VLOG(0) << "TikTakToe on connected:";
-
-    // VLOG(0) << "\tServer: " + getLocalAddressAsString();
-    // VLOG(0) << "\tClient: " + getRemoteAddressAsString();
-
-    // VLOG(0) << "\tNumPlayers: " << gameModel.numPlayers;
+    VLOG(0) << "TikTakToe connected:";
 
     if (gameModel.numPlayers < 2) {
         nlohmann::json json;
@@ -79,7 +75,6 @@ void TikTakToeSubProtocol::onConnected() {
 }
 
 void TikTakToeSubProtocol::onMessageStart([[maybe_unused]] int opCode) {
-    // VLOG(0) << "TikTakToe on Message Start - OpCode: " << opCode;
 }
 
 void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) {
@@ -87,8 +82,6 @@ void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) 
 }
 
 void TikTakToeSubProtocol::onMessageEnd() {
-    // VLOG(0) << "TikTakToe on Data: " << data;
-
     nlohmann::json action = nlohmann::json::parse(data);
 
     VLOG(0) << "Action dump: " << action.dump();
@@ -111,16 +104,16 @@ void TikTakToeSubProtocol::onMessageEnd() {
 }
 
 void TikTakToeSubProtocol::onMessageError(uint16_t errnum) {
-    VLOG(0) << "TikTakToe on Message error: " << errnum;
+    VLOG(0) << "TikTakToe: Message error: " << errnum;
 }
 
 void TikTakToeSubProtocol::onPongReceived() {
-    // VLOG(0) << "TikTakToe on Pong received";
+    VLOG(0) << "TikTakToe: Pong received";
     flyingPings = 0;
 }
 
 void TikTakToeSubProtocol::onDisconnected() {
-    // VLOG(0) << "TikTakToe on disconnected:";
+    VLOG(0) << "TikTakToe: disconnected:";
 
     if (activePlayer) {
         gameModel.numPlayers--;
@@ -129,7 +122,4 @@ void TikTakToeSubProtocol::onDisconnected() {
             gameModel.resetBoard();
         }
     }
-
-    // VLOG(0) << "\tServer: " + getLocalAddressAsString();
-    // VLOG(0) << "\tClient: " + getRemoteAddressAsString();
 }
