@@ -20,19 +20,20 @@
 #ifndef TIKTAKTOESUBPROTOCOLINTERFACE_H
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
+#include "TikTakToeSubProtocol.h"
 #include "web/websocket/server/SubProtocol.h"        // IWYU pragma: export
 #include "web/websocket/server/SubProtocolFactory.h" // IWYU pragma: export
 
 #include <string>
 
-class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFactory {
+class TikTakToeSubProtocolFactory : public web::websocket::SubProtocolFactory<TikTakToeSubProtocol> {
 public:
-    using web::websocket::server::SubProtocolFactory::SubProtocolFactory;
+    using web::websocket::SubProtocolFactory<TikTakToeSubProtocol>::SubProtocolFactory;
 
 private:
-    web::websocket::server::SubProtocol* create() override;
+    web::websocket::SubProtocolFactory<TikTakToeSubProtocol>::SubProtocol* create() override;
 };
 
-extern "C" web::websocket::server::SubProtocolFactory* tiktaktoeServerSubProtocolFactory();
+extern "C" void* tiktaktoeServerSubProtocolFactory();
 
 #endif
