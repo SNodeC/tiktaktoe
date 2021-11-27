@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     core::SNodeC::init(argc, argv);
 
-    express::legacy::WebApp legacyApp;
+    express::legacy::in::WebApp legacyApp;
 
     legacyApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {
@@ -91,15 +91,15 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen(8080, [](int err) -> void {
+    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
         if (err != 0) {
             PLOG(ERROR) << "Listen";
         } else {
-            VLOG(0) << "snode.c listening on port 8080";
+            VLOG(0) << "snode.c listening on " << socket.getBindAddress().toString();
         }
     });
 
-    express::tls::WebApp tlsApp({{"certChain", SERVERCERTF}, {"keyPEM", SERVERKEYF}, {"password", KEYFPASS}});
+    express::tls::in::WebApp tlsApp({{"certChain", SERVERCERTF}, {"keyPEM", SERVERKEYF}, {"password", KEYFPASS}});
 
     tlsApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {
@@ -145,11 +145,11 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen(8088, [](int err) -> void {
+    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int err) -> void {
         if (err != 0) {
             PLOG(ERROR) << "Listen";
         } else {
-            VLOG(0) << "snode.c listening on port 8088";
+            VLOG(0) << "snode.c listening on " << socket.getBindAddress().toString();
         }
     });
 
