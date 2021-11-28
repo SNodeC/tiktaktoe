@@ -28,8 +28,8 @@
 
 #include "config.h"
 #include "core/SNodeC.h"
-#include "express/legacy/WebApp.h"
-#include "express/tls/WebApp.h"
+#include "express/legacy/in/WebApp.h"
+#include "express/tls/in/WebApp.h"
 #include "web/http/http_utils.h" // for ci_contains
 
 #include <log/Logger.h>
