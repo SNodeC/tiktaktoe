@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    express::tls::in::WebApp tlsApp({{"certChain", SERVERCERTF}, {"keyPEM", SERVERKEYF}, {"password", KEYFPASS}});
+    express::tls::in::WebApp tlsApp({{"CertChain", SERVERCERTF}, {"CertChainKey", SERVERKEYF}, {"Password", KEYFPASS}});
 
     tlsApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {

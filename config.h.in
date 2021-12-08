@@ -22,7 +22,7 @@
 
 #cmakedefine CMAKE_SOURCE_DIR "@CMAKE_SOURCE_DIR@/"
 
-#define SNODEC_CMAKE_SOURCE_DIR "/home/voc/projects/ServerVoc/"
+#define SNODEC_CMAKE_SOURCE_DIR "/home/voc/projects/snodec/snode.c/"
 
 #define SERVERROOT SNODEC_CMAKE_SOURCE_DIR "docs/html"
 
