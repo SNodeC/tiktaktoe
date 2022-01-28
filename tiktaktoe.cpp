@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     core::SNodeC::init(argc, argv);
 
-    express::legacy::in::WebApp legacyApp("tiktaktoe-legacy");
+    express::legacy::in::WebApp legacyApp("legacy");
 
     legacyApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {
@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    express::tls::in::WebApp tlsApp("tiktaktoe-tls", {{"CertChain", SERVERCERTF}, {"CertChainKey", SERVERKEYF}, {"Password", KEYFPASS}});
+    express::tls::in::WebApp tlsApp("tls", {{"CertChain", SERVERCERTF}, {"CertChainKey", SERVERKEYF}, {"Password", KEYFPASS}});
 
     tlsApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {
