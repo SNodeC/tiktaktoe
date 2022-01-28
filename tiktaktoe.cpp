@@ -91,7 +91,8 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
+    legacyApp.listen([](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
+        //    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
         if (err != 0) {
             PLOG(ERROR) << "Listen";
         } else {
@@ -145,7 +146,8 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int err) -> void {
+    tlsApp.listen([](const express::tls::in::WebApp::Socket& socket, int err) -> void {
+        //    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int err) -> void {
         if (err != 0) {
             PLOG(ERROR) << "Listen";
         } else {
