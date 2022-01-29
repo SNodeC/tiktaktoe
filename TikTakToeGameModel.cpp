@@ -140,6 +140,7 @@ void TikTakToeGameModel::resetBoard() {
 
     state = "reset";
     winner = "";
+    whosNext = 0;
 }
 
 nlohmann::json TikTakToeGameModel::updateClientState() {
