@@ -91,12 +91,12 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen([](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
+    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, int err) -> void {
         //    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
         if (err != 0) {
             PLOG(ERROR) << "Listen";
         } else {
-            VLOG(0) << "snode.c listening on " << socket.getBindAddress().toString();
+            VLOG(0) << "snode.c listening on " << socketAddress.toString();
         }
     });
 
@@ -146,12 +146,12 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen([](const express::tls::in::WebApp::Socket& socket, int err) -> void {
+    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, int err) -> void {
         //    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int err) -> void {
         if (err != 0) {
             PLOG(ERROR) << "Listen";
         } else {
-            VLOG(0) << "snode.c listening on " << socket.getBindAddress().toString();
+            VLOG(0) << "snode.c listening on " << socketAddress.toString();
         }
     });
 
