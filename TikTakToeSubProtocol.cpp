@@ -21,7 +21,6 @@
 
 #include "TikTakToeGameModel.h"
 #include "config.h"
-#include "core/timer/IntervalTimer.h" // for Timer, IntervalTimer
 
 #include <functional>       // for function
 #include <initializer_list> // for initializer_list
