@@ -31,10 +31,6 @@ class TikTakToeGameModel;
 
 // IWYU pragma: no_include <web/websocket/server/SubProtocol.h>
 
-namespace core::timer {
-    class Timer;
-}
-
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:
     TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& game);

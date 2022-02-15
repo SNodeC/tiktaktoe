@@ -30,6 +30,8 @@
 #include <nlohmann/json_fwd.hpp> // for json
 #include <vector>                // for vector
 
+// IWYU pragma: no_include <timer/Timer.h>
+
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::websocket::server::SubProtocol(name)
     , gameModel(gameModel)
