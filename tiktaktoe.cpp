@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
     });
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
-        if (httputils::ci_contains(req.header("connection"), "Upgrade")) {
+        if (httputils::ci_contains(req.get("connection"), "Upgrade")) {
             res.upgrade(req);
         } else {
             res.sendStatus(404);
@@ -139,7 +139,7 @@ int main(int argc, char* argv[]) {
     });
 
     tlsApp.get("/ws", [] APPLICATION(req, res) {
-        if (httputils::ci_contains(req.header("connection"), "Upgrade")) {
+        if (httputils::ci_contains(req.get("connection"), "Upgrade")) {
             res.upgrade(req);
         } else {
             res.sendStatus(404);
