@@ -32,6 +32,7 @@
 #include "express/tls/in/WebApp.h"
 #include "web/http/http_utils.h" // for ci_contains
 
+#include <cerrno>
 #include <log/Logger.h>
 
 int main(int argc, char* argv[]) {
@@ -91,12 +92,15 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, int err) -> void {
-        //    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int err) -> void {
-        if (err != 0) {
-            PLOG(ERROR) << "Listen";
+    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, int errnum) -> void {
+        //    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int errnum) -> void {
+        if (errnum < 0) {
+            PLOG(ERROR) << "OnError";
+        } else if (errnum > 0) {
+            errno = errnum;
+            PLOG(ERROR) << "OnError: " << socketAddress.toString();
         } else {
-            VLOG(0) << "snode.c listening on " << socketAddress.toString();
+            VLOG(0) << "snode.c connecting to " << socketAddress.toString();
         }
     });
 
@@ -146,12 +150,15 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, int err) -> void {
-        //    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int err) -> void {
-        if (err != 0) {
-            PLOG(ERROR) << "Listen";
+    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, int errnum) -> void {
+        //    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int errnum) -> void {
+        if (errnum < 0) {
+            PLOG(ERROR) << "OnError";
+        } else if (errnum > 0) {
+            errno = errnum;
+            PLOG(ERROR) << "OnError: " << socketAddress.toString();
         } else {
-            VLOG(0) << "snode.c listening on " << socketAddress.toString();
+            VLOG(0) << "snode.c connecting to " << socketAddress.toString();
         }
     });
 
