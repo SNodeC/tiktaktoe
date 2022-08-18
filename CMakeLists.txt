@@ -3,9 +3,8 @@ cmake_minimum_required(VERSION 3.5)
 project(TikTakToe LANGUAGES CXX)
 
 find_package(
-    snodec
-    COMPONENTS http-server-express websocket-server core-socket-stream-tls
-               core-socket-stream-legacy net-in-stream net-in6-stream
+    snodec COMPONENTS http-server-express websocket-server net-in-stream-legacy
+                      net-in-stream-tls
 )
 
 get_target_property(
@@ -112,8 +111,7 @@ if(snodec_FOUND)
     target_link_libraries(
         tiktaktoe-inline
         PUBLIC snodec::http-server-express snodec::websocket-server
-               snodec::core-socket-stream-tls snodec::core-socket-stream-legacy
-               snodec::net-in-stream snodec::net-in6-stream
+               snodec::net-in-stream-legacy snodec::net-in-stream-tls
     )
 
     install(TARGETS tiktaktoe-inline RUNTIME DESTINATION bin)
@@ -136,12 +134,8 @@ if(snodec_FOUND)
 
     target_link_libraries(
         tiktaktoe-dynamic
-        PUBLIC snodec::http-server-express
-               snodec::websocket-server
-               snodec::core-socket-stream-tls
-               snodec::core-socket-stream-legacy
-               snodec::net-in-stream
-               snodec::net-in6-stream
+        PUBLIC snodec::http-server-express snodec::websocket-server
+               snodec::net-in-stream-legacy snodec::net-in-stream-tls
                tiktaktoeplugin
     )
 
@@ -169,8 +163,7 @@ if(snodec_FOUND)
     target_link_libraries(
         tiktaktoe-half
         PUBLIC snodec::http-server-express snodec::websocket-server
-               snodec::core-socket-stream-tls snodec::core-socket-stream-legacy
-               snodec::net-in-stream snodec::net-in6-stream
+               snodec::net-in-stream-legacy snodec::net-in-stream-tls
     )
 
     install(TARGETS tiktaktoe-half RUNTIME DESTINATION bin)
@@ -191,10 +184,8 @@ if(snodec_FOUND)
     )
 
     target_link_libraries(
-        tiktaktoe
-        PUBLIC snodec::http-server-express snodec::core-socket-stream-tls
-               snodec::core-socket-stream-legacy snodec::net-in-stream
-               snodec::net-in6-stream
+        tiktaktoe PUBLIC snodec::http-server-express
+                         snodec::net-in-stream-legacy snodec::net-in-stream-tls
     )
 
     install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
