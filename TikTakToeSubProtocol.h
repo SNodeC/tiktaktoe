@@ -54,7 +54,7 @@ private:
 
     TikTakToeGameModel& gameModel;
 
-    core::timer::Timer timer;
+    core::timer::Timer pingTimer;
 };
 
 #endif

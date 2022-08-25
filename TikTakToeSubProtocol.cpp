@@ -35,12 +35,13 @@
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::websocket::server::SubProtocol(name)
     , gameModel(gameModel)
-    , timer(core::timer::Timer::intervalTimer(
+    , pingTimer(core::timer::Timer::intervalTimer(
           [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
               this->sendPing();
               this->flyingPings++;
-              if (this->flyingPings >= MAX_FLYING_PINGS) {
+              if (this->flyingPings > MAX_FLYING_PINGS) {
                   this->sendClose();
+                  pingTimer.cancel();
               }
           },
           {10, 0},
@@ -48,7 +49,7 @@ TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGam
 }
 
 TikTakToeSubProtocol::~TikTakToeSubProtocol() {
-    timer.cancel();
+    pingTimer.cancel();
 }
 
 void TikTakToeSubProtocol::onConnected() {
