@@ -35,14 +35,11 @@ class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:
     TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& game);
 
-    ~TikTakToeSubProtocol() override;
-
     void onConnected() override;
     void onMessageStart(int opCode) override;
     void onMessageData(const char* junk, std::size_t junkLen) override;
     void onMessageEnd() override;
     void onMessageError(uint16_t errnum) override;
-    void onPongReceived() override;
     void onDisconnected() override;
 
 private:
@@ -50,11 +47,7 @@ private:
 
     std::string data;
 
-    int flyingPings = 0;
-
     TikTakToeGameModel& gameModel;
-
-    core::timer::Timer pingTimer;
 };
 
 #endif

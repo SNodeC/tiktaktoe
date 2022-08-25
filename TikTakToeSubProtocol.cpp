@@ -33,23 +33,8 @@
 // IWYU pragma: no_include <timer/Timer.h>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
-    : web::websocket::server::SubProtocol(name)
-    , gameModel(gameModel)
-    , pingTimer(core::timer::Timer::intervalTimer(
-          [this]([[maybe_unused]] const void* arg, [[maybe_unused]] const std::function<void()>& stop) -> void {
-              this->sendPing();
-              this->flyingPings++;
-              if (this->flyingPings > MAX_FLYING_PINGS) {
-                  this->sendClose();
-                  pingTimer.cancel();
-              }
-          },
-          {10, 0},
-          nullptr)) {
-}
-
-TikTakToeSubProtocol::~TikTakToeSubProtocol() {
-    pingTimer.cancel();
+    : web::websocket::server::SubProtocol(name, PING_INTERVAL, MAX_FLYING_PINGS)
+    , gameModel(gameModel) {
 }
 
 void TikTakToeSubProtocol::onConnected() {
@@ -107,11 +92,6 @@ void TikTakToeSubProtocol::onMessageEnd() {
 
 void TikTakToeSubProtocol::onMessageError(uint16_t errnum) {
     VLOG(0) << "TikTakToe: Message error: " << errnum;
-}
-
-void TikTakToeSubProtocol::onPongReceived() {
-    VLOG(0) << "TikTakToe: Pong received";
-    flyingPings = 0;
 }
 
 void TikTakToeSubProtocol::onDisconnected() {

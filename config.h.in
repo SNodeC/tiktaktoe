@@ -36,6 +36,7 @@
 
 #define KEYFPASS "snode.c"
 
+#define PING_INTERVAL 5
 #define MAX_FLYING_PINGS 3
 
 #endif
