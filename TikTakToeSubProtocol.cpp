@@ -22,7 +22,6 @@
 #include "TikTakToeGameModel.h"
 #include "config.h"
 
-#include <functional>       // for function
 #include <initializer_list> // for initializer_list
 #include <log/Logger.h>
 #include <map> // for operator==
@@ -31,6 +30,7 @@
 #include <vector>                // for vector
 
 // IWYU pragma: no_include <timer/Timer.h>
+// IWYU pragma: no_include <nlohmann/detail/json_pointer.hpp>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
     : web::websocket::server::SubProtocol(name, PING_INTERVAL, MAX_FLYING_PINGS)

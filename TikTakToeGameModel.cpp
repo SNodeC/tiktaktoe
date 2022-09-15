@@ -22,6 +22,8 @@
 #include <map>               // for operator==
 #include <nlohmann/json.hpp> // for basic_json<>::object_t, basic_json<>::v...
 
+// IWYU pragma: no_include <nlohmann/detail/json_pointer.hpp>
+
 TikTakToeGameModel TikTakToeGameModel::gameModel;
 
 void TikTakToeGameModel::playersMove(const std::string& player, int cell) {

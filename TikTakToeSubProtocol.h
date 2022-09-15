@@ -22,7 +22,6 @@
 
 class TikTakToeGameModel;
 
-#include "core/timer/Timer.h"                 // for Timer, IntervalTimer
 #include "web/websocket/server/SubProtocol.h" // IWYU pragma: export
 
 #include <cstddef>
