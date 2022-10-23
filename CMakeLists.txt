@@ -23,8 +23,6 @@ if(snodec_FOUND)
     set(CMAKE_CXX_STANDARD 20)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
     find_program(iwyu_path NAMES include-what-you-use iwyu)
 
     if(iwyu_path)
