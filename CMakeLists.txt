@@ -178,7 +178,6 @@ if(snodec_FOUND)
 
     target_include_directories(
         tiktaktoe PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                          ${WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
     )
 
     target_link_libraries(
