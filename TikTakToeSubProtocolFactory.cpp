@@ -24,8 +24,8 @@
 
 #define NAME "tiktaktoe"
 
-TikTakToeSubProtocol* TikTakToeSubProtocolFactory::create() {
-    return new TikTakToeSubProtocol(getName(), TikTakToeGameModel::getGameModel());
+TikTakToeSubProtocol* TikTakToeSubProtocolFactory::create(web::websocket::SubProtocolContext* subProtocolContext) {
+    return new TikTakToeSubProtocol(subProtocolContext, getName(), TikTakToeGameModel::getGameModel());
 }
 
 extern "C" void* tiktaktoeServerSubProtocolFactory() {

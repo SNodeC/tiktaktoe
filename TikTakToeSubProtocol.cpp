@@ -32,8 +32,10 @@
 // IWYU pragma: no_include <timer/Timer.h>
 // IWYU pragma: no_include <nlohmann/detail/json_pointer.hpp>
 
-TikTakToeSubProtocol::TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& gameModel)
-    : web::websocket::server::SubProtocol(name, PING_INTERVAL, MAX_FLYING_PINGS)
+TikTakToeSubProtocol::TikTakToeSubProtocol(web::websocket::SubProtocolContext* subProtocolContext,
+                                           const std::string& name,
+                                           TikTakToeGameModel& gameModel)
+    : web::websocket::server::SubProtocol(subProtocolContext, name, PING_INTERVAL, MAX_FLYING_PINGS)
     , gameModel(gameModel) {
 }
 
@@ -104,4 +106,8 @@ void TikTakToeSubProtocol::onDisconnected() {
             gameModel.resetBoard();
         }
     }
+}
+
+void TikTakToeSubProtocol::onExit() {
+    VLOG(0) << "TikTakToe: exit:";
 }

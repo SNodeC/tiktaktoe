@@ -24,6 +24,10 @@
 #include "web/websocket/SubProtocolFactory.h" // IWYU pragma: export
 #include "web/websocket/server/SubProtocol.h" // IWYU pragma: export
 
+namespace web::websocket {
+    class SubProtocolContext;
+}
+
 // IWYU pragma: no_include <web/websocket/SubProtocolFactory.h>
 // IWYU pragma: no_include <web/websocket/server/SubProtocol.h>
 
@@ -34,7 +38,7 @@ public:
     using web::websocket::SubProtocolFactory<TikTakToeSubProtocol>::SubProtocolFactory;
 
 private:
-    TikTakToeSubProtocol* create() override;
+    TikTakToeSubProtocol* create(web::websocket::SubProtocolContext* subProtocolContext) override;
 };
 
 extern "C" void* tiktaktoeServerSubProtocolFactory();

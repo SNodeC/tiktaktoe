@@ -24,6 +24,10 @@ class TikTakToeGameModel;
 
 #include "web/websocket/server/SubProtocol.h" // IWYU pragma: export
 
+namespace web::websocket {
+    class SubProtocolContext;
+}
+
 #include <cstddef>
 #include <stdint.h> // for uint16_t
 #include <string>   // for string
@@ -32,7 +36,7 @@ class TikTakToeGameModel;
 
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 public:
-    TikTakToeSubProtocol(const std::string& name, TikTakToeGameModel& game);
+    TikTakToeSubProtocol(web::websocket::SubProtocolContext* subProtocolContext, const std::string& name, TikTakToeGameModel& game);
 
     void onConnected() override;
     void onMessageStart(int opCode) override;
@@ -40,6 +44,7 @@ public:
     void onMessageEnd() override;
     void onMessageError(uint16_t errnum) override;
     void onDisconnected() override;
+    void onExit() override;
 
 private:
     bool activePlayer = false;
