@@ -35,12 +35,12 @@
 #include <log/Logger.h>
 
 int main(int argc, char* argv[]) {
-#ifdef LINK_SUBPROTOCOL_STATIC
-    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
-#endif
-
 #if defined(LINK_WEBSOCKET_STATIC) || defined(LINK_SUBPROTOCOL_STATIC)
     web::websocket::server::SocketContextUpgradeFactory::link();
+#endif
+
+#ifdef LINK_SUBPROTOCOL_STATIC
+    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
 #endif
 
     core::SNodeC::init(argc, argv);
