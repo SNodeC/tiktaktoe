@@ -17,6 +17,8 @@ get_target_property(
     WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS
 )
 
+get_target_property(HTTP_SERVER_RPATH snodec::http-server HTTP_SERVER_RPATH)
+
 if(snodec_FOUND)
     configure_file(config.h.in config.h @ONLY)
 
@@ -90,6 +92,7 @@ if(snodec_FOUND)
             LIBRARY DESTINATION ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}
     )
 
+
     # ##########################################################################
     #
     # Inline linked target
@@ -110,6 +113,10 @@ if(snodec_FOUND)
         tiktaktoe-inline
         PUBLIC snodec::http-server-express snodec::websocket-server
                snodec::net-in-stream-legacy snodec::net-in-stream-tls
+    )
+
+    set_target_properties(
+        tiktaktoe-inline PROPERTIES INSTALL_RPATH "${HTTP_SERVER_RPATH}"
     )
 
     install(TARGETS tiktaktoe-inline RUNTIME DESTINATION bin)
@@ -142,6 +149,10 @@ if(snodec_FOUND)
         ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}
     )
 
+    set_target_properties(
+        tiktaktoe-dynamic PROPERTIES INSTALL_RPATH "${HTTP_SERVER_RPATH}"
+    )
+
     install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
 
     # ##########################################################################
@@ -164,6 +175,10 @@ if(snodec_FOUND)
                snodec::net-in-stream-legacy snodec::net-in-stream-tls
     )
 
+    set_target_properties(
+        tiktaktoe-half PROPERTIES INSTALL_RPATH "${HTTP_SERVER_RPATH}"
+    )
+
     install(TARGETS tiktaktoe-half RUNTIME DESTINATION bin)
 
     # ##########################################################################
@@ -183,6 +198,10 @@ if(snodec_FOUND)
     target_link_libraries(
         tiktaktoe PUBLIC snodec::http-server-express
                          snodec::net-in-stream-legacy snodec::net-in-stream-tls
+    )
+
+    set_target_properties(
+        tiktaktoe PROPERTIES INSTALL_RPATH "${HTTP_SERVER_RPATH}"
     )
 
     install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
