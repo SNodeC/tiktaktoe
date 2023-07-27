@@ -17,12 +17,6 @@ get_target_property(
     WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS
 )
 
-get_target_property(HTTP_SERVER_RPATH snodec::http-server HTTP_SERVER_RPATH)
-get_target_property(
-    HTTP_SERVER_UPGRADE_INSTALL_LIBDIR snodec::http-server
-    HTTP_SERVER_UPGRADE_INSTALL_LIBDIR
-)
-
 if(snodec_FOUND)
     configure_file(config.h.in config.h @ONLY)
 
@@ -119,7 +113,7 @@ if(snodec_FOUND)
         tiktaktoe-inline
         PROPERTIES
             INSTALL_RPATH
-            "${HTTP_SERVER_RPATH};${CMAKE_INSTALL_PREFIX}/${HTTP_SERVER_UPGRADE_INSTALL_LIBDIR};${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
+            "${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
     )
 
     install(TARGETS tiktaktoe-inline RUNTIME DESTINATION bin)
@@ -156,7 +150,7 @@ if(snodec_FOUND)
         tiktaktoe-dynamic
         PROPERTIES
             INSTALL_RPATH
-            "${HTTP_SERVER_RPATH};${CMAKE_INSTALL_PREFIX}/${HTTP_SERVER_UPGRADE_INSTALL_LIBDIR};${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
+            "${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
     )
 
     install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
@@ -185,7 +179,7 @@ if(snodec_FOUND)
         tiktaktoe-half
         PROPERTIES
             INSTALL_RPATH
-            "${HTTP_SERVER_RPATH};${CMAKE_INSTALL_PREFIX}/${HTTP_SERVER_UPGRADE_INSTALL_LIBDIR};${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
+            "${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
     )
 
     install(TARGETS tiktaktoe-half RUNTIME DESTINATION bin)
@@ -205,10 +199,6 @@ if(snodec_FOUND)
     target_link_libraries(
         tiktaktoe PUBLIC snodec::http-server-express
                          snodec::net-in-stream-legacy snodec::net-in-stream-tls
-    )
-
-    set_target_properties(
-        tiktaktoe PROPERTIES INSTALL_RPATH "${HTTP_SERVER_RPATH}"
     )
 
     install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
