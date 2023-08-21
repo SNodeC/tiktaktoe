@@ -7,16 +7,6 @@ find_package(
                       net-in-stream-tls
 )
 
-get_target_property(
-    WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR snodec::websocket-server
-    WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR
-)
-
-get_target_property(
-    WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS snodec::websocket-server
-    WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS
-)
-
 if(snodec_FOUND)
     configure_file(config.h.in config.h @ONLY)
 
@@ -73,18 +63,19 @@ if(snodec_FOUND)
 
     add_library(tiktaktoeplugin SHARED ${TIKTAKTOE_SUBPROTOCOL_SOURCES})
 
+    target_link_libraries(tiktaktoeplugin PUBLIC snodec::websocket-server)
+
     set_target_properties(
-        tiktaktoeplugin PROPERTIES OUTPUT_NAME "snodec-websocket-tiktaktoe"
-                                   SOVERSION 1 # PREFIX "ssp"
+        tiktaktoeplugin PROPERTIES OUTPUT_NAME "snodec-websocket-tiktaktoe-server"
+                                   SOVERSION "${SNODEC_SOVERSION}" # PREFIX "ssp"
     )
 
     target_include_directories(
         tiktaktoeplugin PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
-                                ${WEBSOCKET_SUBPROTOCOL_SERVER_INCLUDE_DIRS}
     )
 
     install(TARGETS tiktaktoeplugin
-            LIBRARY DESTINATION ${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}
+            LIBRARY DESTINATION ${WEBSOCKET_SUBPROTOCOL_INSTALL_LIBDIR}
     )
 
     # ##########################################################################
@@ -113,7 +104,7 @@ if(snodec_FOUND)
         tiktaktoe-inline
         PROPERTIES
             INSTALL_RPATH
-            "${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
+            "${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_INSTALL_LIBDIR}"
     )
 
     install(TARGETS tiktaktoe-inline RUNTIME DESTINATION bin)
@@ -150,7 +141,7 @@ if(snodec_FOUND)
         tiktaktoe-dynamic
         PROPERTIES
             INSTALL_RPATH
-            "${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
+            "${CMAKE_INSTALL_PREFIX}/${WEBSOCKET_SUBPROTOCOL_INSTALL_LIBDIR}"
     )
 
     install(TARGETS tiktaktoe-dynamic RUNTIME DESTINATION bin)
@@ -179,7 +170,7 @@ if(snodec_FOUND)
         tiktaktoe-half
         PROPERTIES
             INSTALL_RPATH
-            "${WEBSOCKET_SUBPROTOCOL_SERVER_INSTALL_LIBDIR}"
+            "${WEBSOCKET_SUBPROTOCOL_INSTALL_LIBDIR}"
     )
 
     install(TARGETS tiktaktoe-half RUNTIME DESTINATION bin)
@@ -202,6 +193,13 @@ if(snodec_FOUND)
     )
 
     install(TARGETS tiktaktoe RUNTIME DESTINATION bin)
+
+
+    # ##########################################################################
+    #
+    # Custom targets: format and uninstall
+    #
+    # ##########################################################################
 
     add_custom_target(format DEPENDS format-cmds)
     add_custom_command(
