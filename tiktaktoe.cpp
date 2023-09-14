@@ -84,14 +84,8 @@ int main(int argc, char* argv[]) {
     });
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
-        if (httputils::ci_contains(req.get("connection"), "Upgrade")) {
-            if (req.get("Sec-WebSocket-Protocol") == "tiktaktoe") {
-                res.upgrade(req);
-            } else {
-                res.sendStatus(404);
-            }
-        } else {
-            res.sendStatus(404);
+        if (!res.upgrade(req)) {
+            res.end();
         }
     });
 

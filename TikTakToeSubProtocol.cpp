@@ -22,6 +22,7 @@
 #include "TikTakToeGameModel.h"
 #include "config.h"
 
+#include <cstring>
 #include <initializer_list> // for initializer_list
 #include <log/Logger.h>
 #include <map> // for operator==
@@ -108,6 +109,8 @@ void TikTakToeSubProtocol::onDisconnected() {
     }
 }
 
-void TikTakToeSubProtocol::onExit() {
+void TikTakToeSubProtocol::onExit(int signum) {
     VLOG(0) << "TikTakToe: exit:";
+
+    LOG(INFO) << "SubProtocol 'TikTakTop' exit doe to '" << strsignal(signum) << "' (SIG" << sigabbrev_np(signum) << " = " << signum << ")";
 }
