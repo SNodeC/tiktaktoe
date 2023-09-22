@@ -89,15 +89,8 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, int errnum) -> void {
-        //    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int errnum) -> void {
-        if (errnum < 0) {
-            PLOG(ERROR) << "OnError";
-        } else if (errnum > 0) {
-            PLOG(ERROR) << "OnError: " << socketAddress.toString();
-        } else {
-            VLOG(0) << "snode.c connecting to " << socketAddress.toString();
-        }
+    legacyApp.listen([](const core::ProgressLog& progressLog) -> void {
+        progressLog.logProgress();
     });
 
     express::tls::in::WebApp tlsApp("tls");
@@ -150,15 +143,8 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, int errnum) -> void {
-        //    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int errnum) -> void {
-        if (errnum < 0) {
-            PLOG(ERROR) << "OnError";
-        } else if (errnum > 0) {
-            PLOG(ERROR) << "OnError: " << socketAddress.toString();
-        } else {
-            VLOG(0) << "snode.c connecting to " << socketAddress.toString();
-        }
+    tlsApp.listen([](const core::ProgressLog& progressLog) -> void {
+        progressLog.logProgress();
     });
 
     return core::SNodeC::start();
