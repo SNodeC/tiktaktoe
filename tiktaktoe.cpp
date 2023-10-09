@@ -89,14 +89,20 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, int errnum) -> void {
-        //    legacyApp.listen(8080, [](const express::legacy::in::WebApp::Socket& socket, int errnum) -> void {
-        if (errnum < 0) {
-            PLOG(ERROR) << "OnError";
-        } else if (errnum > 0) {
-            PLOG(ERROR) << "OnError: " << socketAddress.toString();
-        } else {
-            VLOG(0) << "snode.c connecting to " << socketAddress.toString();
+    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, core::socket::State state) -> void {
+        switch (state) {
+            case core::socket::State::OK:
+                VLOG(1) << "legacy: listening on '" << socketAddress.toString() << "'";
+                break;
+            case core::socket::State::DISABLED:
+                VLOG(1) << "legacy: disabled";
+                break;
+            case core::socket::State::ERROR:
+                VLOG(1) << "legacy: non critical error occurred";
+                break;
+            case core::socket::State::FATAL:
+                VLOG(1) << "legacy: critical error occurred";
+                break;
         }
     });
 
@@ -150,14 +156,20 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, int errnum) -> void {
-        //    tlsApp.listen(8088, [](const express::tls::in::WebApp::Socket& socket, int errnum) -> void {
-        if (errnum < 0) {
-            PLOG(ERROR) << "OnError";
-        } else if (errnum > 0) {
-            PLOG(ERROR) << "OnError: " << socketAddress.toString();
-        } else {
-            VLOG(0) << "snode.c connecting to " << socketAddress.toString();
+    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, const core::socket::State& state) -> void {
+        switch (state) {
+            case core::socket::State::OK:
+                VLOG(1) << "tls: listening on '" << socketAddress.toString() << "'";
+                break;
+            case core::socket::State::DISABLED:
+                VLOG(1) << "tls: disabled";
+                break;
+            case core::socket::State::ERROR:
+                VLOG(1) << "tls: non critical error occurred";
+                break;
+            case core::socket::State::FATAL:
+                VLOG(1) << "tls: critical error occurred";
+                break;
         }
     });
 
