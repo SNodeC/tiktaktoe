@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     core::SNodeC::init(argc, argv);
 
-    express::legacy::in::WebApp legacyApp("legacy");
+    const express::legacy::in::WebApp legacyApp("legacy");
 
     legacyApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {
@@ -89,24 +89,26 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    legacyApp.listen([](const express::legacy::in::WebApp::SocketAddress& socketAddress, core::socket::State state) -> void {
+    legacyApp.listen([instanceName = legacyApp.getConfig().getInstanceName()](
+                         const net::in::SocketAddress& socketAddress,
+                         const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
             case core::socket::State::OK:
-                VLOG(1) << "legacy: listening on '" << socketAddress.toString() << "'";
+                VLOG(1) << instanceName << ": listening on '" << socketAddress.toString() << "'";
                 break;
             case core::socket::State::DISABLED:
-                VLOG(1) << "legacy: disabled";
+                VLOG(1) << instanceName << ": disabled";
                 break;
             case core::socket::State::ERROR:
-                VLOG(1) << "legacy: non critical error occurred";
+                LOG(ERROR) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
             case core::socket::State::FATAL:
-                VLOG(1) << "legacy: critical error occurred";
+                LOG(FATAL) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
         }
     });
 
-    express::tls::in::WebApp tlsApp("tls");
+    const express::tls::in::WebApp tlsApp("tls");
 
     tlsApp.get("/", [] APPLICATION(req, res) {
         if (req.url == "/") {
@@ -156,19 +158,21 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen([](const express::tls::in::WebApp::SocketAddress& socketAddress, const core::socket::State& state) -> void {
+    tlsApp.listen([instanceName = legacyApp.getConfig().getInstanceName()](
+                      const net::in::SocketAddress& socketAddress,
+                      const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
             case core::socket::State::OK:
-                VLOG(1) << "tls: listening on '" << socketAddress.toString() << "'";
+                VLOG(1) << instanceName << ": listening on '" << socketAddress.toString() << "'";
                 break;
             case core::socket::State::DISABLED:
-                VLOG(1) << "tls: disabled";
+                VLOG(1) << instanceName << ": disabled";
                 break;
             case core::socket::State::ERROR:
-                VLOG(1) << "tls: non critical error occurred";
+                LOG(ERROR) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
             case core::socket::State::FATAL:
-                VLOG(1) << "tls: critical error occurred";
+                LOG(FATAL) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
         }
     });
