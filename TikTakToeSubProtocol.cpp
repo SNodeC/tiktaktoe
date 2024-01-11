@@ -109,7 +109,7 @@ void TikTakToeSubProtocol::onDisconnected() {
     }
 }
 
-void TikTakToeSubProtocol::onExit(int signum) {
+void TikTakToeSubProtocol::onSignal(int signum) {
     VLOG(0) << "TikTakToe: exit:";
 
     LOG(INFO) << "SubProtocol 'TikTakTop' exit doe to '" << strsignal(signum) << "' (SIG" << sigabbrev_np(signum) << " = " << signum << ")";

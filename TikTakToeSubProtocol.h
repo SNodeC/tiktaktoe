@@ -44,7 +44,7 @@ public:
     void onMessageEnd() override;
     void onMessageError(uint16_t errnum) override;
     void onDisconnected() override;
-    void onExit(int signum) override;
+    void onSignal(int signum) override;
 
 private:
     bool activePlayer = false;
