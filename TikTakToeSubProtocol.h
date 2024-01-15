@@ -35,6 +35,9 @@ namespace web::websocket {
 // IWYU pragma: no_include <web/websocket/server/SubProtocol.h>
 
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
+private:
+    using Super = web::websocket::server::SubProtocol;
+
 public:
     TikTakToeSubProtocol(web::websocket::SubProtocolContext* subProtocolContext, const std::string& name, TikTakToeGameModel& game);
 
@@ -44,7 +47,7 @@ public:
     void onMessageEnd() override;
     void onMessageError(uint16_t errnum) override;
     void onDisconnected() override;
-    void onSignal(int signum) override;
+    [[nodiscard]] bool onSignal(int signum) override;
 
 private:
     bool activePlayer = false;
