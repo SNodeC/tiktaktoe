@@ -84,7 +84,11 @@ int main(int argc, char* argv[]) {
     });
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
-        if (!res.upgrade(req)) {
+        if (res.upgrade(req)) {
+            VLOG(1) << "Successful not upgrade to '" << req.get("upgrade") << "'";
+            res.end();
+        } else {
+            VLOG(1) << "Can upgrade to '" << req.get("upgrade") << "'";
             res.end();
         }
     });
@@ -147,14 +151,12 @@ int main(int argc, char* argv[]) {
     });
 
     tlsApp.get("/ws", [] APPLICATION(req, res) {
-        if (httputils::ci_contains(req.get("connection"), "Upgrade")) {
-            if (req.get("Sec-WebSocket-Protocol") == "tiktaktoe") {
-                res.upgrade(req);
-            } else {
-                res.sendStatus(404);
-            }
+        if (res.upgrade(req)) {
+            VLOG(1) << "Successful not upgrade to '" << req.get("upgrade") << "'";
+            res.end();
         } else {
-            res.sendStatus(404);
+            VLOG(1) << "Can upgrade to '" << req.get("upgrade") << "'";
+            res.end();
         }
     });
 
