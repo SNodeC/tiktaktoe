@@ -48,48 +48,48 @@ int main(int argc, char* argv[]) {
     const express::legacy::in::WebApp legacyApp("legacy");
 
     legacyApp.get("/", [] APPLICATION(req, res) {
-        if (req.url == "/") {
-            req.url = "/index.html";
+        if (req->url == "/") {
+            req->url = "/index.html";
         }
 
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     legacyApp.get("/css", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     legacyApp.get("/js", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     legacyApp.get("/sfx", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
-        if (res.upgrade(req)) {
-            VLOG(1) << "Successful not upgrade to '" << req.get("upgrade") << "'";
-            res.end();
+        if (res->upgrade(req)) {
+            VLOG(1) << "Successful not upgrade to '" << req->get("upgrade") << "'";
+            res->end();
         } else {
-            VLOG(1) << "Can upgrade to '" << req.get("upgrade") << "'";
-            res.end();
+            VLOG(1) << "Can upgrade to '" << req->get("upgrade") << "'";
+            res->end();
         }
     });
 
@@ -115,48 +115,48 @@ int main(int argc, char* argv[]) {
     const express::tls::in::WebApp tlsApp("tls");
 
     tlsApp.get("/", [] APPLICATION(req, res) {
-        if (req.url == "/") {
-            req.url = "/index.html";
+        if (req->url == "/") {
+            req->url = "/index.html";
         }
 
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     tlsApp.get("/css", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     tlsApp.get("/js", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     tlsApp.get("/sfx", [] APPLICATION(req, res) {
-        res.sendFile(CMAKE_SOURCE_DIR "public" + req.url, [&req](int ret) -> void {
+        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req.url;
+                PLOG(ERROR) << req->url;
             }
         });
     });
 
     tlsApp.get("/ws", [] APPLICATION(req, res) {
-        if (res.upgrade(req)) {
-            VLOG(1) << "Successful not upgrade to '" << req.get("upgrade") << "'";
-            res.end();
+        if (res->upgrade(req)) {
+            VLOG(1) << "Successful not upgrade to '" << req->get("upgrade") << "'";
+            res->end();
         } else {
-            VLOG(1) << "Can upgrade to '" << req.get("upgrade") << "'";
-            res.end();
+            VLOG(1) << "Can upgrade to '" << req->get("upgrade") << "'";
+            res->end();
         }
     });
 
