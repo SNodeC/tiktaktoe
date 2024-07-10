@@ -85,12 +85,13 @@ int main(int argc, char* argv[]) {
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
-            res->upgrade(req, [req](bool success) -> void {
+            res->upgrade(req, [req, res](bool success) -> void {
                 if (success) {
                     VLOG(1) << "Successful upgrade to '" << req->get("upgrade") << "'";
                 } else {
                     VLOG(1) << "Can not upgrade to '" << req->get("upgrade") << "'";
                 }
+                res->end();
             });
         } else {
             res->sendStatus(404);
@@ -156,12 +157,13 @@ int main(int argc, char* argv[]) {
 
     tlsApp.get("/ws", [] APPLICATION(req, res) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
-            res->upgrade(req, [req](bool success) -> void {
+            res->upgrade(req, [req, res](bool success) -> void {
                 if (success) {
                     VLOG(1) << "Successful upgrade to '" << req->get("upgrade") << "'";
                 } else {
                     VLOG(1) << "Can not upgrade to '" << req->get("upgrade") << "'";
                 }
+                res->end();
             });
         } else {
             res->sendStatus(404);
