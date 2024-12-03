@@ -22,17 +22,15 @@
 
 class TikTakToeGameModel;
 
-#include "web/websocket/server/SubProtocol.h" // IWYU pragma: export
+#include <web/websocket/server/SubProtocol.h>
 
 namespace web::websocket {
     class SubProtocolContext;
 }
 
 #include <cstddef>
-#include <stdint.h> // for uint16_t
-#include <string>   // for string
-
-// IWYU pragma: no_include <web/websocket/server/SubProtocol.h>
+#include <stdint.h>
+#include <string>
 
 class TikTakToeSubProtocol : public web::websocket::server::SubProtocol {
 private:

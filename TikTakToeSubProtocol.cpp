@@ -22,16 +22,13 @@
 #include "TikTakToeGameModel.h"
 #include "config.h"
 
+#include <cmath>
 #include <cstring>
-#include <initializer_list> // for initializer_list
 #include <log/Logger.h>
-#include <map> // for operator==
+#include <map>
 #include <nlohmann/json.hpp>
-#include <nlohmann/json_fwd.hpp> // for json
-#include <vector>                // for vector
 
-// IWYU pragma: no_include <timer/Timer.h>
-// IWYU pragma: no_include <nlohmann/detail/json_pointer.hpp>
+// IWYU pragma: no_include <nlohmann/json_fwd.hpp>
 
 TikTakToeSubProtocol::TikTakToeSubProtocol(web::websocket::SubProtocolContext* subProtocolContext,
                                            const std::string& name,

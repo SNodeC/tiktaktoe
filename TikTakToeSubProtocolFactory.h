@@ -21,17 +21,8 @@
 #define TIKTAKTOESUBPROTOCOLINTERFACE_H
 
 #include "TikTakToeSubProtocol.h"
-#include "web/websocket/SubProtocolFactory.h" // IWYU pragma: export
-#include "web/websocket/server/SubProtocol.h" // IWYU pragma: export
 
-namespace web::websocket {
-    class SubProtocolContext;
-}
-
-// IWYU pragma: no_include <web/websocket/SubProtocolFactory.h>
-// IWYU pragma: no_include <web/websocket/server/SubProtocol.h>
-
-#include <string>
+#include <web/websocket/SubProtocolFactory.h>
 
 class TikTakToeSubProtocolFactory : public web::websocket::SubProtocolFactory<TikTakToeSubProtocol> {
 public:

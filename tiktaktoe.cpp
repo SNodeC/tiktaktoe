@@ -27,12 +27,12 @@
 #endif
 
 #include "config.h"
-#include "core/SNodeC.h"
-#include "express/legacy/in/WebApp.h"
-#include "express/tls/in/WebApp.h"
-#include "web/http/http_utils.h" // for ci_contains
 
+#include <core/SNodeC.h>
+#include <express/legacy/in/WebApp.h>
+#include <express/tls/in/WebApp.h>
 #include <log/Logger.h>
+#include <string>
 
 int main(int argc, char* argv[]) {
 #if defined(LINK_WEBSOCKET_STATIC) || defined(LINK_SUBPROTOCOL_STATIC)

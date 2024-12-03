@@ -19,10 +19,7 @@
 
 #include "TikTakToeGameModel.h"
 
-#include <map>               // for operator==
-#include <nlohmann/json.hpp> // for basic_json<>::object_t, basic_json<>::v...
-
-// IWYU pragma: no_include <nlohmann/detail/json_pointer.hpp>
+#include <nlohmann/json.hpp>
 
 TikTakToeGameModel TikTakToeGameModel::gameModel;
 
