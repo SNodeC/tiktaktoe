@@ -28,6 +28,6 @@ TikTakToeSubProtocol* TikTakToeSubProtocolFactory::create(web::websocket::SubPro
     return new TikTakToeSubProtocol(subProtocolContext, getName(), TikTakToeGameModel::getGameModel());
 }
 
-extern "C" TikTakToeSubProtocolFactory* tiktaktoeServerSubProtocolFactory() {
+extern "C" TikTakToeSubProtocolFactory* subProtocolFactory() {
     return new TikTakToeSubProtocolFactory(NAME);
 }

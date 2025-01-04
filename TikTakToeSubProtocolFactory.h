@@ -32,6 +32,6 @@ private:
     TikTakToeSubProtocol* create(web::websocket::SubProtocolContext* subProtocolContext) override;
 };
 
-extern "C" TikTakToeSubProtocolFactory* tiktaktoeServerSubProtocolFactory();
+extern "C" TikTakToeSubProtocolFactory* subProtocolFactory();
 
 #endif

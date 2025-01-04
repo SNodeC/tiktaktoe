@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 #endif
 
 #ifdef LINK_SUBPROTOCOL_STATIC
-    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", tiktaktoeServerSubProtocolFactory);
+    web::websocket::server::SubProtocolFactorySelector::link("tiktaktoe", subProtocolFactory);
 #endif
 
     core::SNodeC::init(argc, argv);
@@ -85,11 +85,11 @@ int main(int argc, char* argv[]) {
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
-            res->upgrade(req, [req, res](bool success) -> void {
-                if (success) {
-                    VLOG(1) << "Successful upgrade to '" << req->get("upgrade") << "'";
+            res->upgrade(req, [&subProtocolsRequested = req->get("upgrade"), res](const std::string& name) -> void {
+                if (!name.empty()) {
+                    VLOG(1) << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
                 } else {
-                    VLOG(1) << "Can not upgrade to '" << req->get("upgrade") << "'";
+                    VLOG(1) << "Can not upgrade to any of '" << subProtocolsRequested << "'";
                 }
                 res->end();
             });
@@ -157,11 +157,11 @@ int main(int argc, char* argv[]) {
 
     tlsApp.get("/ws", [] APPLICATION(req, res) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
-            res->upgrade(req, [req, res](bool success) -> void {
-                if (success) {
-                    VLOG(1) << "Successful upgrade to '" << req->get("upgrade") << "'";
+            res->upgrade(req, [&subProtocolsRequested = req->get("upgrade"), res](const std::string& name) -> void {
+                if (!name.empty()) {
+                    VLOG(1) << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
                 } else {
-                    VLOG(1) << "Can not upgrade to '" << req->get("upgrade") << "'";
+                    VLOG(1) << "Can not upgrade to any of '" << subProtocolsRequested << "'";
                 }
                 res->end();
             });
