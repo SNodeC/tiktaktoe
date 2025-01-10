@@ -170,7 +170,7 @@ int main(int argc, char* argv[]) {
         }
     });
 
-    tlsApp.listen([instanceName = legacyApp.getConfig().getInstanceName()](
+    tlsApp.listen([instanceName = tlsApp.getConfig().getInstanceName()](
                       const net::in::SocketAddress& socketAddress,
                       const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
