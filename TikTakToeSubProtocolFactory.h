@@ -22,16 +22,17 @@
 
 #include "TikTakToeSubProtocol.h"
 
-#include <web/websocket/SubProtocolFactory.h>
+#include <web/websocket/server/SubProtocolFactory.h>
 
-class TikTakToeSubProtocolFactory : public web::websocket::SubProtocolFactory<TikTakToeSubProtocol> {
+class TikTakToeSubProtocolFactory : public web::websocket::server::SubProtocolFactory<TikTakToeSubProtocol> {
 public:
-    using web::websocket::SubProtocolFactory<TikTakToeSubProtocol>::SubProtocolFactory;
+    using web::websocket::server::SubProtocolFactory<TikTakToeSubProtocol>::SubProtocolFactory;
 
 private:
     TikTakToeSubProtocol* create(web::websocket::SubProtocolContext* subProtocolContext) override;
 };
 
-extern "C" TikTakToeSubProtocolFactory* tiktaktoeServerSubProtocolFactory();
+// extern "C" TikTakToeSubProtocolFactory* tiktaktoeServerSubProtocolFactory();
+extern "C" web::websocket::server::SubProtocolFactory<TikTakToeSubProtocol>* tiktaktoeServerSubProtocolFactory();
 
 #endif
