@@ -30,9 +30,9 @@
 
 #include <core/SNodeC.h>
 #include <express/legacy/in/WebApp.h>
+#include <express/middleware/StaticMiddleware.h>
 #include <express/tls/in/WebApp.h>
 #include <log/Logger.h>
-#include <string>
 
 int main(int argc, char* argv[]) {
 #if defined(LINK_WEBSOCKET_STATIC) || defined(LINK_SUBPROTOCOL_STATIC)
@@ -47,58 +47,34 @@ int main(int argc, char* argv[]) {
 
     const express::legacy::in::WebApp legacyApp("legacy");
 
-    legacyApp.get("/", [] APPLICATION(req, res) {
-        if (req->url == "/") {
-            req->url = "/index.html";
-        }
-
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
-
-    legacyApp.get("/css", [] APPLICATION(req, res) {
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
-
-    legacyApp.get("/js", [] APPLICATION(req, res) {
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
-
-    legacyApp.get("/sfx", [] APPLICATION(req, res) {
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
+    legacyApp.use(express::middleware::StaticMiddleware(CMAKE_SOURCE_DIR "public"));
 
     legacyApp.get("/ws", [] APPLICATION(req, res) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
-            res->upgrade(req, [&subProtocolsRequested = req->get("upgrade"), res](const std::string& name) -> void {
-                if (!name.empty()) {
-                    VLOG(1) << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
-                } else {
-                    VLOG(1) << "Can not upgrade to any of '" << subProtocolsRequested << "'";
-                }
-                res->end();
-            });
+            res->upgrade(
+                req,
+                [subProtocolsRequested = req->get("sec-websocket-protocol"),
+                 req,
+                 res,
+                 connectionName = res->getSocketContext()->getSocketConnection()->getConnectionName()](const std::string& name) -> void {
+                    if (!name.empty()) {
+                        VLOG(1) << connectionName << ": Successful upgrade to: " << name;
+                        VLOG(1) << connectionName << ":    SubProtocol requested: " << subProtocolsRequested;
+                        VLOG(1) << connectionName << ":     SubProtocol selected: " << res->header("sec-websocket-protocol");
+
+                        res->end();
+                    } else {
+                        VLOG(1) << connectionName << ": Can not upgrade to any of '" << req->get("upgrade") << "'";
+
+                        res->sendStatus(404);
+                    }
+                });
         } else {
             res->sendStatus(404);
         }
     });
 
-    legacyApp.listen([instanceName = legacyApp.getConfig().getInstanceName()](
+    legacyApp.listen([instanceName = legacyApp.getConfig()->getInstanceName()](
                          const net::in::SocketAddress& socketAddress,
                          const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
@@ -119,58 +95,34 @@ int main(int argc, char* argv[]) {
 
     const express::tls::in::WebApp tlsApp("tls");
 
-    tlsApp.get("/", [] APPLICATION(req, res) {
-        if (req->url == "/") {
-            req->url = "/index.html";
-        }
-
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
-
-    tlsApp.get("/css", [] APPLICATION(req, res) {
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
-
-    tlsApp.get("/js", [] APPLICATION(req, res) {
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
-
-    tlsApp.get("/sfx", [] APPLICATION(req, res) {
-        res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
-            if (ret != 0) {
-                PLOG(ERROR) << req->url;
-            }
-        });
-    });
+    tlsApp.use(express::middleware::StaticMiddleware(CMAKE_SOURCE_DIR "public"));
 
     tlsApp.get("/ws", [] APPLICATION(req, res) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
-            res->upgrade(req, [&subProtocolsRequested = req->get("upgrade"), res](const std::string& name) -> void {
-                if (!name.empty()) {
-                    VLOG(1) << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
-                } else {
-                    VLOG(1) << "Can not upgrade to any of '" << subProtocolsRequested << "'";
-                }
-                res->end();
-            });
+            res->upgrade(
+                req,
+                [subProtocolsRequested = req->get("upgrade"),
+                 req,
+                 res,
+                 connectionName = res->getSocketContext()->getSocketConnection()->getConnectionName()](const std::string& name) -> void {
+                    if (!name.empty()) {
+                        VLOG(1) << connectionName << ": Successful upgrade to: " << name;
+                        VLOG(1) << connectionName << ":    SubProtocol requested: " << subProtocolsRequested;
+                        VLOG(1) << connectionName << ":     SubProtocol selected: " << res->header("sec-websocket-protocol");
+
+                        res->end();
+                    } else {
+                        VLOG(1) << connectionName << ": Can not upgrade to any of '" << req->get("upgrade") << "'";
+
+                        res->sendStatus(404);
+                    }
+                });
         } else {
             res->sendStatus(404);
         }
     });
 
-    tlsApp.listen([instanceName = tlsApp.getConfig().getInstanceName()](
+    tlsApp.listen([instanceName = tlsApp.getConfig()->getInstanceName()](
                       const net::in::SocketAddress& socketAddress,
                       const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
