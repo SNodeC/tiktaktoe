@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <cstring>
-#include <log/Logger.h>
+#include <SemanticLog.h>
 #include <map>
 #include <nlohmann/json.hpp>
 
@@ -38,7 +38,7 @@ TikTakToeSubProtocol::TikTakToeSubProtocol(web::websocket::SubProtocolContext* s
 }
 
 void TikTakToeSubProtocol::onConnected() {
-    VLOG(0) << "TikTakToe connected:";
+    snode::semantic::appLog().trace() << "TikTakToe connected:";
 
     if (gameModel.numPlayers < 2) {
         nlohmann::json json;
@@ -53,11 +53,11 @@ void TikTakToeSubProtocol::onConnected() {
         sendMessage(json.dump());
         activePlayer = true;
 
-        VLOG(0) << "JSON: " << json.dump();
+        snode::semantic::appLog().trace() << "JSON: " << json.dump();
     } else {
         sendClose();
 
-        VLOG(0) << "sendClose";
+        snode::semantic::appLog().trace() << "sendClose";
     }
 }
 
@@ -71,31 +71,31 @@ void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) 
 void TikTakToeSubProtocol::onMessageEnd() {
     nlohmann::json action = nlohmann::json::parse(data);
 
-    VLOG(0) << "Action dump: " << action.dump();
+    snode::semantic::appLog().trace() << "Action dump: " << action.dump();
 
     if (action["type"] == "move") {
         gameModel.playersMove(action["player"], action["cell"]);
         nlohmann::json message = gameModel.updateClientState();
 
         sendBroadcast(message.dump());
-        VLOG(0) << "SendMessage Dump: " << message.dump();
+        snode::semantic::appLog().trace() << "SendMessage Dump: " << message.dump();
     } else if (action["type"] == "reset") {
         gameModel.resetBoard();
         nlohmann::json message = gameModel.updateClientState();
 
         sendBroadcast(message.dump());
-        VLOG(0) << "SendMessage Dump: " << message.dump();
+        snode::semantic::appLog().trace() << "SendMessage Dump: " << message.dump();
     }
 
     data.clear();
 }
 
 void TikTakToeSubProtocol::onMessageError(uint16_t errnum) {
-    VLOG(0) << "TikTakToe: Message error: " << errnum;
+    snode::semantic::appLog().trace() << "TikTakToe: Message error: " << errnum;
 }
 
 void TikTakToeSubProtocol::onDisconnected() {
-    VLOG(0) << "TikTakToe: disconnected:";
+    snode::semantic::appLog().trace() << "TikTakToe: disconnected:";
 
     if (activePlayer) {
         gameModel.numPlayers--;
@@ -107,9 +107,9 @@ void TikTakToeSubProtocol::onDisconnected() {
 }
 
 bool TikTakToeSubProtocol::onSignal(int signum) {
-    VLOG(0) << "TikTakToe: exit:";
+    snode::semantic::appLog().trace() << "TikTakToe: exit:";
 
-    LOG(INFO) << "SubProtocol 'TikTakTop' exit doe to '" << strsignal(signum) << "' (SIG" << sigabbrev_np(signum) << " = " << signum << ")";
+    snode::semantic::appLog().info() << "SubProtocol 'TikTakTop' exit doe to '" << strsignal(signum) << "' (SIG" << sigabbrev_np(signum) << " = " << signum << ")";
 
     return true;
 }
