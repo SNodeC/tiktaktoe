@@ -31,7 +31,7 @@
 #include <core/SNodeC.h>
 #include <express/legacy/in/WebApp.h>
 #include <express/tls/in/WebApp.h>
-#include <log/Logger.h>
+#include <SemanticLog.h>
 #include <string>
 
 int main(int argc, char* argv[]) {
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     legacyApp.get("/css", [] APPLICATION(req, res) {
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     legacyApp.get("/js", [] APPLICATION(req, res) {
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
     legacyApp.get("/sfx", [] APPLICATION(req, res) {
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -88,9 +88,9 @@ int main(int argc, char* argv[]) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
             res->upgrade(req, [&subProtocolsRequested = req->get("upgrade"), res](const std::string& name) -> void {
                 if (!name.empty()) {
-                    VLOG(1) << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
+                    snode::semantic::appLog().trace() << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
                 } else {
-                    VLOG(1) << "Can not upgrade to any of '" << subProtocolsRequested << "'";
+                    snode::semantic::appLog().trace() << "Can not upgrade to any of '" << subProtocolsRequested << "'";
                 }
                 res->end();
             });
@@ -104,16 +104,16 @@ int main(int argc, char* argv[]) {
                          const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
             case core::socket::State::OK:
-                VLOG(1) << instanceName << ": listening on '" << socketAddress.toString() << "'";
+                snode::semantic::appLog().trace() << instanceName << ": listening on '" << socketAddress.toString() << "'";
                 break;
             case core::socket::State::DISABLED:
-                VLOG(1) << instanceName << ": disabled";
+                snode::semantic::appLog().trace() << instanceName << ": disabled";
                 break;
             case core::socket::State::ERROR:
-                LOG(ERROR) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().error() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
             case core::socket::State::FATAL:
-                LOG(FATAL) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().critical() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
         }
     });
@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
 
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
     tlsApp.get("/css", [] APPLICATION(req, res) {
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -143,7 +143,7 @@ int main(int argc, char* argv[]) {
     tlsApp.get("/js", [] APPLICATION(req, res) {
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -151,7 +151,7 @@ int main(int argc, char* argv[]) {
     tlsApp.get("/sfx", [] APPLICATION(req, res) {
         res->sendFile(CMAKE_SOURCE_DIR "public" + req->url, [&req](int ret) -> void {
             if (ret != 0) {
-                PLOG(ERROR) << req->url;
+                snode::semantic::sysError(snode::semantic::appLog(), logger::LogLevel::Error, ret) << req->url;
             }
         });
     });
@@ -160,9 +160,9 @@ int main(int argc, char* argv[]) {
         if (req->get("sec-websocket-protocol").find("tiktaktoe") != std::string::npos) {
             res->upgrade(req, [&subProtocolsRequested = req->get("upgrade"), res](const std::string& name) -> void {
                 if (!name.empty()) {
-                    VLOG(1) << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
+                    snode::semantic::appLog().trace() << "Successful upgrade to '" << name << "'  requested: " << subProtocolsRequested;
                 } else {
-                    VLOG(1) << "Can not upgrade to any of '" << subProtocolsRequested << "'";
+                    snode::semantic::appLog().trace() << "Can not upgrade to any of '" << subProtocolsRequested << "'";
                 }
                 res->end();
             });
@@ -176,16 +176,16 @@ int main(int argc, char* argv[]) {
                       const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
             case core::socket::State::OK:
-                VLOG(1) << instanceName << ": listening on '" << socketAddress.toString() << "'";
+                snode::semantic::appLog().trace() << instanceName << ": listening on '" << socketAddress.toString() << "'";
                 break;
             case core::socket::State::DISABLED:
-                VLOG(1) << instanceName << ": disabled";
+                snode::semantic::appLog().trace() << instanceName << ": disabled";
                 break;
             case core::socket::State::ERROR:
-                LOG(ERROR) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().error() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
             case core::socket::State::FATAL:
-                LOG(FATAL) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().critical() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
         }
     });
