@@ -32,7 +32,7 @@
 #include <express/legacy/in/WebApp.h>
 #include <express/middleware/StaticMiddleware.h>
 #include <express/tls/in/WebApp.h>
-#include <log/Logger.h>
+#include <SemanticLog.h>
 
 int main(int argc, char* argv[]) {
 #if defined(LINK_WEBSOCKET_STATIC) || defined(LINK_SUBPROTOCOL_STATIC)
@@ -58,13 +58,13 @@ int main(int argc, char* argv[]) {
                  res,
                  connectionName = res->getSocketContext()->getSocketConnection()->getConnectionName()](const std::string& name) -> void {
                     if (!name.empty()) {
-                        VLOG(1) << connectionName << ": Successful upgrade to: " << name;
-                        VLOG(1) << connectionName << ":    SubProtocol requested: " << subProtocolsRequested;
-                        VLOG(1) << connectionName << ":     SubProtocol selected: " << res->header("sec-websocket-protocol");
+                        snode::semantic::appLog().debug() << connectionName << ": Successful upgrade to: " << name;
+                        snode::semantic::appLog().debug() << connectionName << ":    SubProtocol requested: " << subProtocolsRequested;
+                        snode::semantic::appLog().debug() << connectionName << ":     SubProtocol selected: " << res->header("sec-websocket-protocol");
 
                         res->end();
                     } else {
-                        VLOG(1) << connectionName << ": Can not upgrade to any of '" << req->get("upgrade") << "'";
+                        snode::semantic::appLog().warn() << connectionName << ": Can not upgrade to any of '" << req->get("upgrade") << "'";
 
                         res->sendStatus(404);
                     }
@@ -79,16 +79,16 @@ int main(int argc, char* argv[]) {
                          const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
             case core::socket::State::OK:
-                VLOG(1) << instanceName << ": listening on '" << socketAddress.toString() << "'";
+                snode::semantic::appLog().info() << instanceName << ": listening on '" << socketAddress.toString() << "'";
                 break;
             case core::socket::State::DISABLED:
-                VLOG(1) << instanceName << ": disabled";
+                snode::semantic::appLog().info() << instanceName << ": disabled";
                 break;
             case core::socket::State::ERROR:
-                LOG(ERROR) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().error() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
             case core::socket::State::FATAL:
-                LOG(FATAL) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().critical() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
         }
     });
@@ -106,13 +106,13 @@ int main(int argc, char* argv[]) {
                  res,
                  connectionName = res->getSocketContext()->getSocketConnection()->getConnectionName()](const std::string& name) -> void {
                     if (!name.empty()) {
-                        VLOG(1) << connectionName << ": Successful upgrade to: " << name;
-                        VLOG(1) << connectionName << ":    SubProtocol requested: " << subProtocolsRequested;
-                        VLOG(1) << connectionName << ":     SubProtocol selected: " << res->header("sec-websocket-protocol");
+                        snode::semantic::appLog().debug() << connectionName << ": Successful upgrade to: " << name;
+                        snode::semantic::appLog().debug() << connectionName << ":    SubProtocol requested: " << subProtocolsRequested;
+                        snode::semantic::appLog().debug() << connectionName << ":     SubProtocol selected: " << res->header("sec-websocket-protocol");
 
                         res->end();
                     } else {
-                        VLOG(1) << connectionName << ": Can not upgrade to any of '" << req->get("upgrade") << "'";
+                        snode::semantic::appLog().warn() << connectionName << ": Can not upgrade to any of '" << req->get("upgrade") << "'";
 
                         res->sendStatus(404);
                     }
@@ -127,16 +127,16 @@ int main(int argc, char* argv[]) {
                       const core::socket::State& state) -> void { // Listen on all bluetooth interfaces on channel 16{
         switch (state) {
             case core::socket::State::OK:
-                VLOG(1) << instanceName << ": listening on '" << socketAddress.toString() << "'";
+                snode::semantic::appLog().info() << instanceName << ": listening on '" << socketAddress.toString() << "'";
                 break;
             case core::socket::State::DISABLED:
-                VLOG(1) << instanceName << ": disabled";
+                snode::semantic::appLog().info() << instanceName << ": disabled";
                 break;
             case core::socket::State::ERROR:
-                LOG(ERROR) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().error() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
             case core::socket::State::FATAL:
-                LOG(FATAL) << instanceName << ": " << socketAddress.toString() << ": " << state.what();
+                snode::semantic::appLog().critical() << instanceName << ": " << socketAddress.toString() << ": " << state.what();
                 break;
         }
     });

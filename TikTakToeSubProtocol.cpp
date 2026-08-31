@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <cstring>
-#include <log/Logger.h>
+#include <SemanticLog.h>
 #include <map>
 #include <nlohmann/json.hpp>
 
@@ -38,7 +38,7 @@ TikTakToeSubProtocol::TikTakToeSubProtocol(web::websocket::SubProtocolContext* s
 }
 
 void TikTakToeSubProtocol::onConnected() {
-    VLOG(0) << "TikTakToe connected:";
+    snode::semantic::appLog().info() << "TikTakToe connected:";
 
     if (gameModel.numPlayers < 2) {
         nlohmann::json json;
@@ -50,14 +50,18 @@ void TikTakToeSubProtocol::onConnected() {
         json["leader"] = gameModel.players[gameModel.whosNext];
         json["player"] = gameModel.players[gameModel.numPlayers++];
 
-        sendMessage(json.dump());
+        const std::string message = json.dump();
+        sendMessage(message);
         activePlayer = true;
 
-        VLOG(0) << "JSON: " << json.dump();
+        auto log = snode::semantic::appLog();
+        if (log.enabled(logger::LogLevel::Trace)) {
+            log.trace() << "JSON: " << message;
+        }
     } else {
         sendClose();
 
-        VLOG(0) << "sendClose";
+        snode::semantic::appLog().debug() << "sendClose";
     }
 }
 
@@ -71,31 +75,40 @@ void TikTakToeSubProtocol::onMessageData(const char* junk, std::size_t junkLen) 
 void TikTakToeSubProtocol::onMessageEnd() {
     nlohmann::json action = nlohmann::json::parse(data);
 
-    VLOG(0) << "Action dump: " << action.dump();
+    auto log = snode::semantic::appLog();
+    if (log.enabled(logger::LogLevel::Trace)) {
+        log.trace() << "Action dump: " << action.dump();
+    }
 
     if (action["type"] == "move") {
         gameModel.playersMove(action["player"], action["cell"]);
         nlohmann::json message = gameModel.updateClientState();
 
-        sendBroadcast(message.dump());
-        VLOG(0) << "SendMessage Dump: " << message.dump();
+        const std::string payload = message.dump();
+        sendBroadcast(payload);
+        if (log.enabled(logger::LogLevel::Trace)) {
+            log.trace() << "SendMessage Dump: " << payload;
+        }
     } else if (action["type"] == "reset") {
         gameModel.resetBoard();
         nlohmann::json message = gameModel.updateClientState();
 
-        sendBroadcast(message.dump());
-        VLOG(0) << "SendMessage Dump: " << message.dump();
+        const std::string payload = message.dump();
+        sendBroadcast(payload);
+        if (log.enabled(logger::LogLevel::Trace)) {
+            log.trace() << "SendMessage Dump: " << payload;
+        }
     }
 
     data.clear();
 }
 
 void TikTakToeSubProtocol::onMessageError(uint16_t errnum) {
-    VLOG(0) << "TikTakToe: Message error: " << errnum;
+    snode::semantic::appLog().warn() << "TikTakToe: Message error: " << errnum;
 }
 
 void TikTakToeSubProtocol::onDisconnected() {
-    VLOG(0) << "TikTakToe: disconnected:";
+    snode::semantic::appLog().info() << "TikTakToe: disconnected:";
 
     if (activePlayer) {
         gameModel.numPlayers--;
@@ -107,9 +120,9 @@ void TikTakToeSubProtocol::onDisconnected() {
 }
 
 bool TikTakToeSubProtocol::onSignal(int signum) {
-    VLOG(0) << "TikTakToe: exit:";
+    snode::semantic::appLog().info() << "TikTakToe: exit:";
 
-    LOG(INFO) << "SubProtocol 'TikTakTop' exit doe to '" << strsignal(signum) << "' (SIG" << sigabbrev_np(signum) << " = " << signum << ")";
+    snode::semantic::appLog().info() << "SubProtocol 'TikTakTop' exit doe to '" << strsignal(signum) << "' (SIG" << sigabbrev_np(signum) << " = " << signum << ")";
 
     return true;
 }
